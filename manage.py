@@ -1,0 +1,44 @@
+import os
+import click
+from app import create_app
+from app.models import db
+
+
+@click.group()
+def cli():
+    pass
+
+
+@click.command()
+@click.argument('env', type=click.Choice(['dev', 'test', 'staging', 'prod']), default='dev')
+def run(env):
+
+    config_path = 'app/settings/{env}.ini'.format(env=env)
+    app = create_app(config_path)
+
+    host = app.config['HOST']
+    port = int(app.config['PORT'])
+
+    db.init_app(app)
+    db.create_all(app=app)
+
+    app.run(host=host, port=port)
+
+
+@click.command()
+@click.argument('env', type=click.Choice(['dev', 'test', 'staging', 'prod']), default='dev')
+def generate_key(env):
+
+    config_path = 'app/settings/{env}.ini'.format(env=env)
+    config = common.import_config(config_path)
+
+    config['FLASK']['SECRET_KEY'] = os.urandom(12).hex()
+
+    common.export_config(config, config_path)
+
+
+cli.add_command(run)
+cli.add_command(generate_key)
+
+if __name__ == "__main__":
+    cli()

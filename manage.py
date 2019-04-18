@@ -2,6 +2,7 @@ import os
 import click
 from app import create_app
 from app.models import db
+from app.utils import common
 
 
 @click.group()

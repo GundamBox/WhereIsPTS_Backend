@@ -19,11 +19,12 @@ def run(env):
 
     host = app.config['HOST']
     port = int(app.config['PORT'])
+    debug = common.str2bool(app.config['DEBUG'])
 
     db.init_app(app)
     db.create_all(app=app)
 
-    app.run(host=host, port=port)
+    app.run(host=host, port=port, debug=debug)
 
 
 @click.command()

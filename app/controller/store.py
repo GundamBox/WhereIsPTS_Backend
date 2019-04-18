@@ -9,7 +9,10 @@ store = Blueprint('store', __name__)
 @store.route('/api/store/<int:store_id>', methods=['GET'])
 def get_store(store_id):
     store = Store.get_by_id(store_id)
-    return jsonify(store.serialize())
+    if store
+    return jsonify(store.serialize()), 200
+    else:
+        return Response(status=404)
 
 
 @store.route('/api/store', methods=['POST'])
@@ -24,9 +27,9 @@ def create_store():
                   request.remote_addr)
     success = store.create()
     if success:
-        return Response(status=201)
+        return store.id, 200
     else:
-        return Response(status=500)
+        return Response(status=400)
 
 
 @store.route('/api/store/<int:store_id>', methods=['PUT'])
@@ -46,6 +49,6 @@ def edit_store(store_id):
     success = s.update()
 
     if success:
-        return Response(status=204)
+        return Response(status=200)
     else:
-        return Response(status=500)
+        return Response(status=400)

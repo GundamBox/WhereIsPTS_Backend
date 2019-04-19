@@ -1,7 +1,9 @@
 import os
+
 import click
+from flask_alembic import alembic_click
+from flask_migrate.cli import db as db_cli
 from app import create_app
-from app.models import db
 from app.utils import common
 
 
@@ -11,18 +13,12 @@ def cli():
 
 
 @click.command()
-@click.argument('env', type=click.Choice(['dev', 'test', 'staging', 'prod']), default='dev')
-def run(env):
-
-    config_path = 'app/settings/{env}.ini'.format(env=env)
-    app = create_app(config_path)
+def run():
+    app = create_app()
 
     host = app.config['HOST']
     port = int(app.config['PORT'])
-    debug = common.str2bool(app.config['DEBUG'])
-
-    db.init_app(app)
-    db.create_all(app=app)
+    debug = app.config['DEBUG']
 
     app.run(host=host, port=port, debug=debug)
 
@@ -41,6 +37,7 @@ def generate_key(env):
 
 cli.add_command(run)
 cli.add_command(generate_key)
+cli.add_command(db_cli)
 
 if __name__ == "__main__":
     cli()

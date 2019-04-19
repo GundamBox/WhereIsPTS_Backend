@@ -1,8 +1,27 @@
 # Where is PTS
 
+## Table of Contens
+
+* [Introduction](#Introduction)
+    * [What is PTS](#What_is_PTS)
+* [Dependencies](#Dependencies)
+* [Installation](#Installation)
+* [Usage](#Usage)
+
 ## Introduction
 
 Because many stores' TV channels are locked in specific junk information channels. So I decided to develop a map website to mark the stores that broadcast high-quality TV programs, so that everyone can search and return the store information.
+
+### What is PTS
+
+PTS is 'Public Television Service Foundation'
+
+This is [english link](http://eng.pts.org.tw/)
+
+## Dependencies
+
+* PostgreSQL
+* libpq-dev
 
 ## Installation
 
@@ -14,22 +33,49 @@ pip install -r requirements.txt
 
 ## Usage
 
-`<env>` can be {dev, test, staging, prod}
+1. **Setup env**
 
-1. **generate screte key**
-
-```bash
-python manage.py generate-key <env>
+```bash 
+export APP_SETTINGS="<env>"
+# `<env>` can be {dev, test, staging, prod}
+# export APP_SETTINGS="prod"
 ```
 
-2. **run**
+2. **generate screte key**
 
 ```bash
-python manage.py run <env>
+python manage.py generate-key
 ```
 
-## What is PTS
+3. **edit database connection string**
 
-PTS is 'Public Television Service Foundation'
+```bash
+vim app/settings/<env>.ini
+```
 
-This is [english link](http://eng.pts.org.tw/)
+Ex: `vim app/settings/dev.ini`
+
+```ini
+#dev.ini
+[FLASK]
+HOST = 0.0.0.0
+PORT = 8080
+ENV = development
+DEBUG = true
+TESTING = true
+SECRET_KEY = please_generate_secret_string
+# setup user_name and user_password
+SQLALCHEMY_DATABASE_URI = postgresql://<user_name>:<user_password>@localhost/whereispts
+```
+
+4. **migrate database**
+
+```bash
+python manage.py db upgrade
+```
+
+5. **run**
+
+```bash
+python manage.py run
+```

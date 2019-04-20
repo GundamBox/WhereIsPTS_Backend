@@ -1,12 +1,14 @@
 import datetime
-from flask import Blueprint, current_app, jsonify, request, Response
 
+from flask import Blueprint, Response, current_app, jsonify, request
+
+from app.commom.utils import str2bool
 from app.models import Store
-from app.utils.common import str2bool
-store = Blueprint('store', __name__)
+
+store = Blueprint('store_v1', __name__)
 
 
-@store.route('/api/store/<int:store_id>', methods=['GET'])
+@store.route('/store/<int:store_id>', methods=['GET'])
 def get_store(store_id):
     store = Store.get_by_id(store_id)
     if store:
@@ -15,7 +17,7 @@ def get_store(store_id):
         return Response(status=404)
 
 
-@store.route('/api/store', methods=['POST'])
+@store.route('/store', methods=['POST'])
 def create_store():
     request_data = request.form
     store = Store(request_data['name'],
@@ -32,7 +34,7 @@ def create_store():
         return Response(status=400)
 
 
-@store.route('/api/store/<int:store_id>', methods=['PUT'])
+@store.route('/store/<int:store_id>', methods=['PUT'])
 def edit_store(store_id):
     request_data = request.form
 

@@ -5,31 +5,22 @@ from flask import Blueprint, Flask
 from flask_migrate import Migrate
 from flask_cors import CORS
 
-from app.models import db
-from app.utils import common
+from app.commom import utils
+from app.commom.database import db
+from config import config
 
 
-def create_app():
+def create_app(config_name='default'):
 
     app = Flask(__name__)
+    app.config.from_object(config[config_name])
+    config[config_name].init_app(app)
+
     CORS(app)
 
-    if 'APP_SETTINGS' in os.environ:
-        env = os.environ['APP_SETTINGS']
-    else:
-        env = 'dev'
-
-    config_path = 'app/settings/{env}.ini'.format(env=env)
-    config = common.import_config(config_path)
-
-    for key, value in dict(config['FLASK']).items():
-        app.config[key] = value
-
-    from .controller.search import search
-    app.register_blueprint(search)
-
-    from .controller.store import store
-    app.register_blueprint(store)
+    from app.v1.api import search, store
+    app.register_blueprint(search, url_prefix='/api/v1')
+    app.register_blueprint(store, url_prefix='/api/v1')
 
     db.init_app(app)
     migrate = Migrate(app, db)

@@ -1,6 +1,6 @@
 # Where is PTS
 
-## Table of Contens
+## Table of Contents
 
 * [Introduction](#Introduction)
     * [What is PTS](#What_is_PTS)

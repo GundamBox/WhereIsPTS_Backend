@@ -2,52 +2,48 @@ import datetime
 import math
 
 from sqlalchemy import Sequence
-from .base import Serializer, db
+
+from app.commom.database import Base, Serializer, db
 
 
-class Store(db.Model, Serializer):
+class Store(Base, Serializer):
     __table__name = 'store'
 
-    id = db.Column(db.Integer, Sequence('store_id_seq'), primary_key=True)
-    name = db.Column(db.String(128), nullable=False)
-    lat = db.Column(db.Float, nullable=False)
-    lng = db.Column(db.Float, nullable=False)
-    address = db.Column(db.String(256), nullable=True)
-    news = db.Column(db.String(128), nullable=False)
-    switchable = db.Column(db.Boolean, nullable=False)
-    lastModified = db.Column(db.DateTime, nullable=False,
-                             default=datetime.datetime.now)
-    ip = db.Column(db.String(40), nullable=False)
+    id = db.Column(db.Integer,
+                   Sequence('store_id_seq'),
+                   primary_key=True)
+    name = db.Column(db.String(128),
+                     nullable=False)
+    lat = db.Column(db.Float,
+                    nullable=False)
+    lng = db.Column(db.Float,
+                    nullable=False)
+    address = db.Column(db.String(256),
+                        nullable=True)
+    switchable = db.Column(db.Boolean,
+                           nullable=False)
+    enable = db.Column(db.Boolean,
+                       nullable=False,
+                       default=True)
+    disable_vote = db.Column(db.Integer,
+                             nullable=False,
+                             default=0)
+    last_modified = db.Column(db.DateTime,
+                              nullable=False,
+                              default=datetime.datetime.now)
+    last_ip = db.Column(db.String(40), nullable=False)
 
-    def __init__(self, name, lat, lng, address, news, switchable, ip):
+    def __init__(self, name, lat, lng, address, switchable, ip):
         self.name = name
         self.lat = lat
         self.lng = lng
         self.address = address
-        self.news = news
         self.switchable = switchable
         self.ip = ip
 
     @classmethod
     def get_by_id(cls, store_id):
         return cls.query.filter(Store.id == store_id).first()
-
-    def create(self):
-        try:
-            db.session.add(self)
-            db.session.commit()
-            return True
-        except Exception as e:
-            print(e)
-            return False
-
-    def update(self):
-        try:
-            db.session.commit()
-            return True
-        except Exception as e:
-            print(e)
-            return False
 
     @classmethod
     def calc_distance(cls, lat1, lon1, lat2, lon2):

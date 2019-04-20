@@ -3,8 +3,16 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+## Added
+- votes, news table
+- implement api versioning
 
-## [0.0.1] - 2019-04-19
+### Changed
+- adjust folder structure
+- adjust database schema
+
+
+## [0.1.0] - 2019-04-19
 ### Added
 - create store
 - update store

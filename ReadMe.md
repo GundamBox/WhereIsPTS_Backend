@@ -27,56 +27,53 @@ This is [english link](http://eng.pts.org.tw/)
 
 ## Installation
 
-```bash
-sh ./build.sh
-source pyenv/bin/activate
-pip install -r requirements.txt
-```
+- **development**
+
+    ```bash
+    sh ./build.sh
+    source pyenv/bin/activate
+    pip install -r requirements/dev.txt
+    ```
+
+- **prodution**
+
+    ```bash
+    sh ./build.sh
+    source pyenv/bin/activate
+    pip install -r requirements/prod.txt
+    ```
+
+- **heroku**
+
+    ```bash
+    sh ./build.sh
+    source pyenv/bin/activate
+    pip install -r requirements.txt
+    ```
 
 ## Usage
 
-1. **Setup env**
+1. **export environment**
 
 ```bash 
-export APP_SETTINGS="<env>"
-# `<env>` can be {dev, test, staging, prod}
+export FLASK_CONFIG="<env>"
+# `<env>` can be {development, testing, production, heroku, default}
 # export APP_SETTINGS="prod"
 ```
 
-2. **generate screte key**
+2. **edit config.py**
 
 ```bash
-python manage.py generate-key
+vim config.py
 ```
 
-3. **edit database connection string**
-
-```bash
-vim app/settings/<env>.ini
-```
-
-Ex: `vim app/settings/dev.ini`
-
-```ini
-#dev.ini
-[FLASK]
-HOST = 0.0.0.0
-PORT = 8080
-ENV = development
-DEBUG = true
-TESTING = true
-SECRET_KEY = please_generate_secret_string
-# setup user_name and user_password
-SQLALCHEMY_DATABASE_URI = postgresql://<user_name>:<user_password>@localhost/whereispts
-```
-
-4. **migrate database**
+3. **migrate database**
 
 ```bash
 python manage.py db upgrade
 ```
 
-5. **run**
+4. **run**
 
 ```bash
 python manage.py run

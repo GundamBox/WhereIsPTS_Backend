@@ -25,11 +25,29 @@ PTS is [公共電視文化事業基金會](https://www.pts.org.tw/)
 
 ## Installation
 
-```bash
-sh ./build.sh
-source pyenv/bin/activate
-pip install -r requirements.txt
-```
+- **development**
+
+    ```bash
+    sh ./build.sh
+    source pyenv/bin/activate
+    pip install -r requirements/dev.txt
+    ```
+
+- **prodution**
+
+    ```bash
+    sh ./build.sh
+    source pyenv/bin/activate
+    pip install -r requirements/prod.txt
+    ```
+
+- **heroku**
+
+    ```bash
+    sh ./build.sh
+    source pyenv/bin/activate
+    pip install -r requirements.txt
+    ```
 
 ## Usage
 
@@ -41,40 +59,19 @@ export APP_SETTINGS="<env>"
 # export APP_SETTINGS="prod"
 ```
 
-2. **產生 screte key**
+2. **設定 config.py**
 
 ```bash
-python manage.py generate-key
+vim config.py
 ```
 
-3. **設定連線字串**
-
-```bash
-vim app/settings/<env>.ini
-```
-
-Ex: `vim app/settings/dev.ini`
-
-```ini
-#dev.ini
-[FLASK]
-HOST = 0.0.0.0
-PORT = 8080
-ENV = development
-DEBUG = true
-TESTING = true
-SECRET_KEY = please_generate_secret_string
-# 設定使用者名稱與密碼
-SQLALCHEMY_DATABASE_URI = postgresql://<user_name>:<user_password>@localhost/whereispts
-```
-
-4. **migrate database**
+3. **migrate database**
 
 ```bash
 python manage.py db upgrade
 ```
 
-5. **執行server**
+4. **執行server**
 
 ```bash
 python manage.py run

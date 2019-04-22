@@ -2,3 +2,4 @@ pyenv/
 .vscode/
 *.pyc
 *.db
+config.py

@@ -30,7 +30,7 @@ This is [english link](http://eng.pts.org.tw/)
 - **development**
 
     ```bash
-    sh ./build.sh
+    sh ./build_venv.sh
     source pyenv/bin/activate
     pip install -r requirements/dev.txt
     ```
@@ -38,7 +38,7 @@ This is [english link](http://eng.pts.org.tw/)
 - **prodution**
 
     ```bash
-    sh ./build.sh
+    sh ./build_venv.sh
     source pyenv/bin/activate
     pip install -r requirements/prod.txt
     ```
@@ -46,7 +46,7 @@ This is [english link](http://eng.pts.org.tw/)
 - **heroku**
 
     ```bash
-    sh ./build.sh
+    sh ./build_venv.sh
     source pyenv/bin/activate
     pip install -r requirements.txt
     ```
@@ -64,6 +64,7 @@ export FLASK_CONFIG="<env>"
 2. **edit config.py**
 
 ```bash
+cp config_example.py config.py
 vim config.py
 ```
 

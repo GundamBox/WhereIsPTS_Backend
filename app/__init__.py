@@ -2,8 +2,8 @@ import logging
 import os
 
 from flask import Blueprint, Flask
-from flask_migrate import Migrate
 from flask_cors import CORS
+from flask_migrate import Migrate
 
 from app.commom import utils
 from app.commom.database import db
@@ -18,9 +18,10 @@ def create_app(config_name='default'):
 
     CORS(app)
 
-    from app.v1.api import search, store
-    app.register_blueprint(search, url_prefix='/api/v1')
-    app.register_blueprint(store, url_prefix='/api/v1')
+    from app.v1.api import channel_controller, store_controller, vote_controller
+    app.register_blueprint(channel_controller, url_prefix='/api/v1')
+    app.register_blueprint(vote_controller, url_prefix='/api/v1')
+    app.register_blueprint(store_controller, url_prefix='/api/v1')
 
     db.init_app(app)
     migrate = Migrate(app, db)

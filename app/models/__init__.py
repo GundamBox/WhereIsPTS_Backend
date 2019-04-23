@@ -1,3 +1,3 @@
-from .news import News
+from .channel import Channel
 from .store import Store
-from .votes import Votes
+from .vote import Vote

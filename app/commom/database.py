@@ -1,3 +1,5 @@
+from abc import abstractclassmethod
+
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.inspection import inspect
 
@@ -26,8 +28,25 @@ class Base(db.Model):
             print(e)
             return False
 
+    @abstractclassmethod
+    def read(cls, _id):
+        raise NotImplementedError
+
+    @abstractclassmethod
+    def read_list(cls):
+        raise NotImplementedError
+
     def update(self):
         try:
+            db.session.commit()
+            return True
+        except Exception as e:
+            print(e)
+            return False
+
+    def delete(self):
+        try:
+            db.session.delete(self)
             db.session.commit()
             return True
         except Exception as e:

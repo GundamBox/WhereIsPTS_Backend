@@ -1,64 +1,82 @@
 import datetime
 import math
 
-from sqlalchemy import Sequence
-
+from sqlalchemy import (Boolean, Column, DateTime, Float, Integer, Sequence,
+                        String, and_)
+from sqlalchemy.orm import relationship
+from geoalchemy2 import Geometry
+from geoalchemy2.functions import ST_Distance, ST_AsGeoJSON
 from app.commom.database import Base, Serializer, db
 
 
 class Store(Base, Serializer):
     __table__name = 'store'
 
-    id = db.Column(db.Integer,
-                   Sequence('store_id_seq'),
-                   primary_key=True)
-    name = db.Column(db.String(128),
-                     nullable=False)
-    lat = db.Column(db.Float,
-                    nullable=False)
-    lng = db.Column(db.Float,
-                    nullable=False)
-    address = db.Column(db.String(256),
-                        nullable=True)
-    switchable = db.Column(db.Boolean,
-                           nullable=False)
-    enable = db.Column(db.Boolean,
-                       nullable=False,
-                       default=True)
-    disable_vote = db.Column(db.Integer,
-                             nullable=False,
-                             default=0)
-    last_modified = db.Column(db.DateTime,
-                              nullable=False,
-                              default=datetime.datetime.now)
-    last_ip = db.Column(db.String(40), nullable=False)
+    sid = Column('id', Integer,
+                 Sequence('store_id_seq'),
+                 primary_key=True)
+    name = Column(String(128),
+                  nullable=False)
+    geom = Column(Geometry('POINT'), nullable=False)
+    # lat = Column(Float,
+    #              nullable=False)
+    # lng = Column(Float,
+    #              nullable=False)
+    address = Column(String(256),
+                     nullable=True)
+    switchable = Column(Boolean,
+                        nullable=False)
+    enable = Column(Boolean,
+                    nullable=False,
+                    default=True)
+    disable_vote = Column(Integer,
+                          nullable=False,
+                          default=0)
+    last_modified = Column(DateTime,
+                           nullable=False,
+                           default=datetime.datetime.now)
+    last_ip = Column(String(40), nullable=False)
+
+    votes = relationship("Vote",
+                         back_populates="store")
 
     def __init__(self, name, lat, lng, address, switchable, ip):
         self.name = name
-        self.lat = lat
-        self.lng = lng
+        self.geom = 'POINT({lat} {lng})'.format(lat=lat, lng=lng)
+        # self.lat = lat
+        # self.lng = lng
         self.address = address
         self.switchable = switchable
         self.ip = ip
 
-    @classmethod
-    def get_by_id(cls, store_id):
-        return cls.query.filter(Store.id == store_id).first()
+    def serialize(self):
+        json_ser = super().serialize()
+        geo_json = ST_AsGeoJSON(json_ser['geom'])
+        lat, lng = geo_json['coordinates']
+        del json_ser['geom']
+        json_ser['lat'] = lat
+        json_ser['lng'] = lng
+        return json_ser
 
     @classmethod
-    def calc_distance(cls, lat1, lon1, lat2, lon2):
-        Earth_radius_km = 6371.009
-        km_per_deg_lat = 2 * math.pi * Earth_radius_km / 360.0
-        km_per_deg_lon = km_per_deg_lat * math.cos(math.radians(lat1))
-        return math.sqrt((km_per_deg_lat * (lat1 - lat2)) ** 2 + (km_per_deg_lon * (lon1 - lon2)) ** 2)
+    def read(cls, sid: int):
+        return cls.query \
+            .filter(Store.sid == sid) \
+            .filter(Store.enable == True) \
+            .first()
 
     @classmethod
-    def search_by_name(cls, name):
-        return cls.query.filter(Store.name.like("%%{name}%%".format(name=name))).all()
+    def read_list(cls, lat: float, lng: float, name: str, radius: float = 5.0, page: int = 1, page_size: int = 50):
 
-    @classmethod
-    def search_by_lat_lng(cls, lat: float, lng: float, distance: float):
-        store_list = cls.query.all()
-        store_list = [store for store in store_list if cls.calc_distance(lat, lng,
-                                                                         store.lat, store.lng) < distance]
-        return store_list
+        radius = max(radius, 5)
+        radius = min(radius, 20)
+
+        store_list = cls.query \
+            .filter(ST_Distance(Store.geom, 'POINT({lat} {lng})'.format(lat=lat, lng=lng)) <= radius)
+
+        if name:
+            store_lit = store_lit.filter(Store.name.like('%' + name + '%'))
+
+        store_list = store_list.offset((page-1)*page_size).limit(page_size)
+
+        return store_list.all()

@@ -20,12 +20,27 @@ PTS is 'Public Television Service Foundation'
 
 This is [english link](http://eng.pts.org.tw/)
 
-## Dependencies
+
+
+## Installation
+
+### Dependencies
 
 * PostgreSQL
 * libpq-dev
 
-## Installation
+```bash
+# libpq-dev
+sudo apt-get install libpq-dev
+# PostgreSQL
+sudo apt-get install postgresql postgresql-contrib
+# PostGIS
+sudo add-apt-repository ppa:ubuntugis/ppa
+sudo apt-get update
+sudo apt-get install postgis
+```
+
+### Environment
 
 - **development**
 

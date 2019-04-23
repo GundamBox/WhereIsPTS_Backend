@@ -6,16 +6,6 @@ from sqlalchemy.inspection import inspect
 db = SQLAlchemy()
 
 
-class Serializer(object):
-
-    def serialize(self):
-        return {c: getattr(self, c) for c in inspect(self).attrs.keys()}
-
-    @staticmethod
-    def serialize_list(l):
-        return [m.serialize() for m in l]
-
-
 class Base(db.Model):
     __abstract__ = True
 
@@ -29,11 +19,11 @@ class Base(db.Model):
             return False
 
     @abstractclassmethod
-    def read(cls, _id):
+    def read(cls, *args, **kwargs):
         raise NotImplementedError
 
     @abstractclassmethod
-    def read_list(cls):
+    def read_list(cls, *args, **kwargs):
         raise NotImplementedError
 
     def update(self):

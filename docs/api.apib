@@ -1,81 +1,303 @@
 FORMAT: 1A
-HOST: https://localhost:3000/apis
+HOST: https://localhost:3000//api/v1/
 
 # WhereIsPTS
 
 WhereIsPTS is an API allow user can vote and report the television channel at eat-out restaurants.
 
+# Allowed HTTPs requests:
+<pre>
+PUT     : To create resource
+POST    : Update resource
+GET     : Get a resource or list of resources
+DELETE  : To delete resource
+</pre>
 
-## Questions Collection [/questions]
+# Description Of Usual Server Responses:
+- 200 `OK` - the request was successful (some API calls may return 201 instead).
+- 201 `Created` - the request was successful and a resource was created.
+- 204 `No Content` - the request was successful but there is no representation to return (i.e. the response is empty).
+- 400 `Bad Request` - the request could not be understood or was missing required parameters.
+- 401 `Unauthorized` - authentication failed or user doesn't have permissions for requested operation.
+- 403 `Forbidden` - access denied.
+- 404 `Not Found` - resource was not found.
+- 405 `Method Not Allowed` - requested method is not supported for resource.
 
-### List All Questions [GET]
+---
 
-+ Response 200 (application/json)
+## Store Collection [/store/{sid}]
 
-        [
-            {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
-                    {
-                        "choice": "Swift",
-                        "votes": 2048
-                    }, {
-                        "choice": "Python",
-                        "votes": 1024
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 512
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 256
-                    }
-                ]
-            }
-        ]
++ Parameters
+    + sid (required, number) ... serial number of a restaurant
 
-### Create a New Question [POST]
+### List A Store [GET]
 
-You may create your own question using this action. It takes a JSON
-object containing a question and a collection of answers in the
-form of choices.
++ Response 201 (application/json)
+
+        {
+            "name": "store name",
+            "lat": "store latitude",
+            "lng": "store longtitude",
+            "address": "store address",
+            "news": "tv channel that store played",
+            "switchable": "tv channels is switchable?",
+        }
+
++ Response 404 (application/json)
+
+        {
+            "error": "Store Not Found"
+        }
+
++ Response 500 (application/json)
+
+        {
+            "error": "Internal Server Error"
+        }
+
+### Modify A Store [PUT]
 
 + Request (application/json)
 
         {
-            "question": "Favourite programming language?",
-            "choices": [
-                "Swift",
-                "Python",
-                "Objective-C",
-                "Ruby"
-            ]
+            "name": "store name",
+            "lat": "store latitude",
+            "lng": "store longtitude",
+            "address": "store address",
+            "news": "tv channel that store played",
+            "switchable": "tv channels is switchable?",
         }
 
 + Response 201 (application/json)
 
     + Headers
 
-            Location: /questions/2
+            Location:/store/{id}
 
     + Body
 
             {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
-                    {
-                        "choice": "Swift",
-                        "votes": 0
-                    }, {
-                        "choice": "Python",
-                        "votes": 0
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 0
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 0
-                    }
-                ]
+                "store_id": 1,
             }
+
++ Response 400 (application/json)
+
+        {
+            "error": "Request Format Wrong"
+        }
+
++ Response 404 (application/json)
+
+        {
+            "error": "Store Not Found"
+        }
+
++ Response 500 (application/json)
+
+        {
+            "error": "Internal Server Error"
+        }
+
+### Delete A Store (Voting) [DELETE]
+
++ Response 204
+
++ Response 404 (application/json)
+
+        {
+            "error": "Store Not Found"
+        }
+
++ Response 500 (application/json)
+
+        {
+            "error": "Internal Server Error"
+        }
+
+## List Stores [/store/list?{name,lat,lng,radius,page}]
+
++ Parameters
+    + name (optional, String) ... store name
+    + lat (required, Number) ... central location of map
+    + lng (required, Number) ... central location of map
+    + radius (optional, Number, `5`) ... query radius in kilo-meter, maximum is `20`
+    + page (required, Number) ... page number of pagination
+
+### List Store [GET]
+
++ Response 201 (application/json)
+
+        {
+            "result": [
+            {...},
+            {...}
+            ],
+            "total": 30
+        }
+
++ Response 500 (application/json)
+
+        {
+            "error": "Internal Server Error"
+        }
+
+## Add A Store [/store]
+
+add a single restaurant
+
+### Add A Store [POST]
+
++ Request (application/json)
+
+        {
+            "name": "store name",
+            "lat": "store latitude",
+            "lng": "store longtitude",
+            "address": "store address",
+            "news": "tv channel that store played",
+            "switchable": "tv channels is switchable?",
+        }
+
++ Response 201 (application/json)
+
+        {
+            "store_id": 1,
+        }
+
++ Response 400 (application/json)
+
+        {
+            "error": "Request Format Wrong"
+        }
+
++ Response 500 (application/json)
+
+        {
+            "error": "Internal Server Error"
+        }
+
+## Vote [/vote/store/{sid}]
+
++ Parameters
+    + sid (required, Number) ... restaurant id
+
+### Vote for a wanted channel for a specific restaurant [POST]
+
++ Request (application/json)
+
+        {
+            "channel_id": 1,
+        }
+
++ Response 201 (application/json)
+
+        {
+            "name": "store name",
+            "lat": "store latitude",
+            "lng": "store longtitude",
+            "address": "store address",
+            "news": "tv channel that store played",
+            "switchable": "tv channels is switchable?",
+        }
+
++ Response 404 (application/json)
+
+        {
+            "error": "Store Not Found"
+        }
+
++ Response 500 (application/json)
+
+        {
+            "error": "Internal Server Error"
+        }
+
+## Channel Collection [/channels]
+
+### Get All Channels [GET]
+
++ Response 201 (application/json)
+
+        [
+            {
+                "channel_id": 1,
+                "channel_name": "PTS"
+            }
+        ]
+
++ Response 500 (application/json)
+
+        {
+            "error": "Internal Server Error"
+        }
+
+### Add a Channel [POST]
+
++ Request (application/json)
+
+        {
+            "channel_name": "PTS",
+        }
+
++ Response 201 (application/json)
+
+        {
+            "channel_id": 1,
+        }
+
++ Response 500 (application/json)
+
+        {
+            "error": "Internal Server Error"
+        }
+
+## Qeury About a Specific Channel [/channel/{cid}]
+
++ Parameters
+    + cid (required, Number) ... channel id
+
+### Search a Specific Channel [GET]
+
++ Response 201 (application/json)
+
+        {
+            "channel_id": 1
+        }
+
++ Response 404 (application/json)
+
+        {
+            "error": "Channel Not Found"
+        }
+
++ Response 500 (application/json)
+
+        {
+            "error": "Internal Server Error"
+        }
+
+### Modify a Specific Channel [PUT]
+
++ Request (application/json)
+
+        {
+            "channel_name": "PTS"
+        }
+
++ Response 201 (application/json)
+
+        {
+            "channel_id": 1
+        }
+
++ Response 404 (application/json)
+
+        {
+            "error": "Channel Not Found"
+        }
+
++ Response 500 (application/json)
+
+        {
+            "error": "Internal Server Error"
+        }

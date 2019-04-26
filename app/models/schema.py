@@ -46,7 +46,7 @@ class StoreSchema(ma.ModelSchema):
         model = Store
         model_converter = GeoConverter
 
-    geom = GeoSerializationField(attribute="geom")
+    location = GeoSerializationField(attribute='location')
     votes = fields.Nested(VoteSchema, many=True)
 
 

@@ -20,7 +20,7 @@ class Store(Base):
                  primary_key=True)
     name = Column(String(128),
                   nullable=False)
-    geom = Column(Geometry('POINT'), nullable=False)
+    location = Column('geom', Geometry('POINT'), nullable=False)
     address = Column(String(256),
                      nullable=True)
     switchable = Column(Boolean,
@@ -40,7 +40,7 @@ class Store(Base):
 
     def __init__(self, name, lat, lng, address, switchable, last_ip):
         self.name = name
-        self.geom = 'POINT({lat} {lng})'.format(lat=lat, lng=lng)
+        self.location = 'POINT({lat} {lng})'.format(lat=lat, lng=lng)
         self.address = address
         self.switchable = switchable
         self.last_ip = last_ip
@@ -59,7 +59,7 @@ class Store(Base):
         radius = min(radius, 20000.0)
 
         store_list = cls.query \
-            .filter(ST_Distance_Sphere(Store.geom, 'POINT({lat} {lng})'.format(lat=lat, lng=lng)) <= radius)
+            .filter(ST_Distance_Sphere(Store.location, 'POINT({lat} {lng})'.format(lat=lat, lng=lng)) <= radius)
 
         if name:
             store_list = store_list.filter(Store.name.like('%' + name + '%'))

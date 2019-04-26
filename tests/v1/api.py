@@ -83,8 +83,10 @@ VALUES (1,'公視新聞'),
             self.assertEqual(resp.status_code, 200)
             self.assertEqual(store_json['sid'], 1)
             self.assertEqual(store_json['name'], '和春麵館')
-            self.assertAlmostEqual(store_json['geom'][0], 22.980661, places=6)
-            self.assertAlmostEqual(store_json['geom'][1], 120.217050, places=6)
+            self.assertAlmostEqual(
+                store_json['location'][0], 22.980661, places=6)
+            self.assertAlmostEqual(
+                store_json['location'][1], 120.217050, places=6)
             self.assertEqual(store_json['address'], '台南市東區崇明路73號')
             self.assertFalse(store_json['switchable'])
 
@@ -94,8 +96,10 @@ VALUES (1,'公視新聞'),
             self.assertEqual(resp.status_code, 200)
             self.assertEqual(store_json['sid'], 2)
             self.assertEqual(store_json['name'], '李師傅牛肉拉麵')
-            self.assertAlmostEqual(store_json['geom'][0], 22.612640, places=6)
-            self.assertAlmostEqual(store_json['geom'][1], 120.344372, places=6)
+            self.assertAlmostEqual(
+                store_json['location'][0], 22.612640, places=6)
+            self.assertAlmostEqual(
+                store_json['location'][1], 120.344372, places=6)
             self.assertEqual(store_json['address'], '高雄市鳳山區新康街300號')
             self.assertFalse(store_json['switchable'])
 
@@ -109,8 +113,8 @@ VALUES (1,'公視新聞'),
             store0 = store_list_json[0]
             self.assertEqual(store0['sid'], 1)
             self.assertEqual(store0['name'], '和春麵館')
-            self.assertAlmostEqual(store0['geom'][0], 22.980661, places=6)
-            self.assertAlmostEqual(store0['geom'][1], 120.217050, places=6)
+            self.assertAlmostEqual(store0['location'][0], 22.980661, places=6)
+            self.assertAlmostEqual(store0['location'][1], 120.217050, places=6)
             self.assertEqual(store0['address'], '台南市東區崇明路73號')
             self.assertFalse(store0['switchable'])
 
@@ -124,8 +128,10 @@ VALUES (1,'公視新聞'),
             self.assertEqual(resp.status_code, 201)
             self.assertEqual(store_json['sid'], 2)
             self.assertEqual(store_json['name'], '李師傅牛肉拉麵')
-            self.assertAlmostEqual(store_json['geom'][0], 22.612640, places=6)
-            self.assertAlmostEqual(store_json['geom'][1], 120.344372, places=6)
+            self.assertAlmostEqual(
+                store_json['location'][0], 22.612640, places=6)
+            self.assertAlmostEqual(
+                store_json['location'][1], 120.344372, places=6)
             self.assertEqual(store_json['address'], '高雄市鳳山區新康街300號')
             self.assertTrue(store_json['switchable'])
 

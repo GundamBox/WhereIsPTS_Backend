@@ -80,7 +80,7 @@ def edit_store(sid: int) -> Response:
         store.name = request_data.get('name', store_json['name'])
 
         lat, lng = request_data.get(
-            'lat', store_json['geom'][0]), request_data.get('lng', store_json['geom'][1])
+            'lat', store_json['location'][0]), request_data.get('lng', store_json['location'][1])
         store.geom = 'POINT({lat} {lng})'.format(lat=lat, lng=lng)
 
         store.address = request_data.get('address', store_json['address'])

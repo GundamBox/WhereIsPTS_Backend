@@ -2,11 +2,15 @@
 
 ## Table of Contents
 
-* [Introduction](#Introduction)
-    * [What is PTS](#What_is_PTS)
-* [Dependencies](#Dependencies)
-* [Installation](#Installation)
-* [Usage](#Usage)
+- [Where is PTS](#where-is-pts)
+  - [Table of Contents](#table-of-contents)
+  - [Introduction](#introduction)
+    - [What is PTS](#what-is-pts)
+  - [Installation](#installation)
+    - [Dependencies](#dependencies)
+    - [Environment](#environment)
+  - [Usage](#usage)
+  - [API documents](#api-documents)
 
 ## Introduction
 
@@ -70,7 +74,7 @@ sudo apt-get install postgis
 
 1. **export environment**
 
-```bash 
+```bash
 export FLASK_CONFIG="<env>"
 # `<env>` can be {development, testing, production, heroku, default}
 # export APP_SETTINGS="prod"
@@ -93,4 +97,13 @@ python manage.py db upgrade
 
 ```bash
 python manage.py run
+```
+
+## API documents
+
+```sh
+npm install -g aglio
+# or you can use yarn add
+aglio -i docs/api.apib --theme-template triple -o index.html
+python -m http.server
 ```

@@ -107,9 +107,10 @@ VALUES (1,'公視新聞'),
         with self.app.test_client() as client:
             resp = client.get(
                 '/api/v1/store/list?lat=22.982320&lng=120.215007')
-            store_list_json = resp.get_json()
             self.assertEqual(resp.status_code, 200)
+            result_json = resp.get_json()
 
+            store_list_json = result_json['result']
             store0 = store_list_json[0]
             self.assertEqual(store0['sid'], 1)
             self.assertEqual(store0['name'], '和春麵館')
@@ -117,6 +118,9 @@ VALUES (1,'公視新聞'),
             self.assertAlmostEqual(store0['location'][1], 120.217050, places=6)
             self.assertEqual(store0['address'], '台南市東區崇明路73號')
             self.assertFalse(store0['switchable'])
+
+            count = result_json['total']
+            self.assertEqual(count, 1)
 
     def test_store_update(self):
         with self.app.test_client() as client:

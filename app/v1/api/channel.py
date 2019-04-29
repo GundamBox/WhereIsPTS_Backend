@@ -3,7 +3,7 @@ import datetime
 from flask import Blueprint, Response, current_app, jsonify, request
 
 from app.commom.utils import str2bool
-from app.models import Channel
+from app.models import Channel, channel_schema, channels_schema
 
 channel_controller = Blueprint('channel_v1', __name__)
 
@@ -13,16 +13,18 @@ def get_channel(cid: int) -> Response:
 
     channel = Channel.read(cid)
     if channel:
-        return jsonify(channel.serialize()), 200
+        result = channel_schema.dump(channel)
+        return jsonify(result.data), 200
     else:
         return Response(status=404)
 
 
-@channel_controller.route('/channel/list', methods=['GET'])
+@channel_controller.route('/channels', methods=['GET'])
 def get_channel_list() -> Response:
 
     channel_list = Channel.read_list()
-    return jsonify(channel_list.serialize()), 200
+    result = channels_schema.dump(channel_list)
+    return jsonify(result.data), 200
 
 
 @channel_controller.route('/channel', methods=['POST'])
@@ -35,7 +37,8 @@ def create_channel():
     success = channel.create()
 
     if success:
-        return str(channel.cid), 200
+        result = channel_schema.dump(channel)
+        return jsonify(result.data), 201
     else:
         return Response(status=500)
 
@@ -53,6 +56,7 @@ def edit_channel(cid):
         success = channel.update()
 
         if success:
-            return str(channel.cid), 200
+            result = channel_schema.dump(channel)
+            return jsonify(result.data), 201
 
     return Response(status=404)

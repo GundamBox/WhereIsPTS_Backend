@@ -30,13 +30,16 @@ def get_store_list() -> Response:
         name = args.get('name', '')
         radius = args.get('radius', 5000.0)
         page = args.get('page', 1)
-        store_list = Store.read_list(lat=lat,
-                                     lng=lng,
-                                     name=name,
-                                     radius=radius,
-                                     page=page)
+        store_list, count = Store.read_list(lat=lat,
+                                            lng=lng,
+                                            name=name,
+                                            radius=radius,
+                                            page=page)
         result = stores_schema.dump(store_list)
-        return jsonify(result.data), 200
+        return jsonify({
+            'result': result.data,
+            'total': count
+        }), 200
     except Exception as e:
         print(e)
         return Response(status=500)

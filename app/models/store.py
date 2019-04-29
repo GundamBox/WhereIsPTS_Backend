@@ -64,7 +64,11 @@ class Store(Base):
         if name:
             store_list = store_list.filter(Store.name.like('%' + name + '%'))
 
-        store_list = store_list.offset(
-            (page-1)*page_size).limit(page_size)
+        store_list = store_list.all()
+        count = len(store_list)
 
-        return store_list.all()
+        offset = (page-1)*page_size
+        store_list = store_list[offset:
+                                offset + page_size]
+
+        return store_list, count

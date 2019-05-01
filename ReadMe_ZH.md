@@ -2,11 +2,15 @@
 
 ## Table of Contents
 
-* [Introduction](#Introduction)
-    * [What is PTS](#What_is_PTS)
-* [Dependencies](#Dependencies)
-* [Installation](#Installation)
-* [Usage](#Usage)
+- [Where is PTS](#where-is-pts)
+  - [Table of Contents](#table-of-contents)
+  - [Introduction](#introduction)
+    - [What is PTS](#what-is-pts)
+  - [Installation](#installation)
+    - [Dependencies](#dependencies)
+    - [Environment](#environment)
+  - [Usage](#usage)
+  - [API documents](#api-documents)
 
 ## Introduction
 
@@ -18,17 +22,32 @@
 
 PTS is [公共電視文化事業基金會](https://www.pts.org.tw/)
 
-## Dependencies
+## Installation
+
+### Dependencies
 
 * PostgreSQL
 * libpq-dev
 
-## Installation
+```bash
+# libpq-dev
+sudo apt-get install libpq-dev
+# PostgreSQL
+sudo apt-get install postgresql postgresql-contrib
+# PostGIS
+sudo add-apt-repository ppa:ubuntugis/ppa
+sudo apt-get update
+sudo apt-get install postgis
+# Supervisor
+sudo apt-get install supervisor
+```
+
+### Environment
 
 - **development**
 
     ```bash
-    sh ./build.sh
+    sh ./install.sh
     source pyenv/bin/activate
     pip install -r requirements/dev.txt
     ```
@@ -36,27 +55,19 @@ PTS is [公共電視文化事業基金會](https://www.pts.org.tw/)
 - **prodution**
 
     ```bash
-    sh ./build.sh
+    sh ./install.sh
     source pyenv/bin/activate
     pip install -r requirements/prod.txt
-    ```
-
-- **heroku**
-
-    ```bash
-    sh ./build.sh
-    source pyenv/bin/activate
-    pip install -r requirements.txt
     ```
 
 ## Usage
 
 1. **設定執行環境**
 
-```bash 
-export APP_SETTINGS="<env>"
-# `<env>` can be {dev, test, staging, prod}
-# export APP_SETTINGS="prod"
+```bash
+export FLASK_CONFIG="<env>"
+# `<env>` can be {development, testing, production, default}
+# export FLASK_CONFIG="development"
 ```
 
 2. **設定 config.py**
@@ -77,3 +88,11 @@ python manage.py db upgrade
 python manage.py run
 ```
 
+## API documents
+
+```sh
+npm install -g aglio
+# or you can use yarn add
+aglio -i docs/api.apib --theme-template triple -o index.html
+python -m http.server
+```

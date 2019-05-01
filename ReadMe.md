@@ -42,6 +42,8 @@ sudo apt-get install postgresql postgresql-contrib
 sudo add-apt-repository ppa:ubuntugis/ppa
 sudo apt-get update
 sudo apt-get install postgis
+# Supervisor
+sudo apt-get install supervisor
 ```
 
 ### Environment
@@ -49,7 +51,7 @@ sudo apt-get install postgis
 - **development**
 
     ```bash
-    sh ./build_venv.sh
+    sh ./install.sh
     source pyenv/bin/activate
     pip install -r requirements/dev.txt
     ```
@@ -57,17 +59,9 @@ sudo apt-get install postgis
 - **prodution**
 
     ```bash
-    sh ./build_venv.sh
+    sh ./install.sh
     source pyenv/bin/activate
     pip install -r requirements/prod.txt
-    ```
-
-- **heroku**
-
-    ```bash
-    sh ./build_venv.sh
-    source pyenv/bin/activate
-    pip install -r requirements.txt
     ```
 
 ## Usage
@@ -76,14 +70,13 @@ sudo apt-get install postgis
 
 ```bash
 export FLASK_CONFIG="<env>"
-# `<env>` can be {development, testing, production, heroku, default}
-# export APP_SETTINGS="prod"
+# `<env>` can be {development, testing, production, default}
+# export FLASK_CONFIG="development"
 ```
 
 2. **edit config.py**
 
 ```bash
-cp config_example.py config.py
 vim config.py
 ```
 

@@ -12,17 +12,16 @@ from app.models.schema import ma
 from config import config
 
 
-def create_app(config_name=os.getenv('FLASK_CONFIG')):
+def create_app(config_name='default'):
 
-    if not config_name:
-        config_name = 'default'
+    config_name = os.getenv('FLASK_CONFIG') or config_name
 
     app = Flask(__name__)
     app.config.from_object(config[config_name])
     config[config_name].init_app(app)
     CORS(app)
 
-    from app.v1.api import channel_controller, store_controller, vote_controller
+    from app.api.v1 import channel_controller, store_controller, vote_controller
     app.register_blueprint(channel_controller, url_prefix='/api/v1')
     app.register_blueprint(vote_controller, url_prefix='/api/v1')
     app.register_blueprint(store_controller, url_prefix='/api/v1')

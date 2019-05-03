@@ -15,13 +15,9 @@ sudo apt-get install -y postgis
 
 # Supervisor
 sudo apt-get install -y supervisor
-# Virtualenv
-sudo apt-get install -y virtualenv
 
-# Install python common package
-virtualenv pyenv --python=python3
-source pyenv/bin/activate
-pip install -r requirements/common.txt
+# Install python package
+pip3 install -r requirements/common.txt
 
 # Make config
 sudo cp config_example.py config.py

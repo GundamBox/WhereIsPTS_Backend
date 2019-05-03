@@ -4,4 +4,4 @@
 export FLASK_CONFIG="production"
 
 # Run server
-pyenv/bin/gunicorn "app:create_app()"
+gunicorn "app:create_app()"

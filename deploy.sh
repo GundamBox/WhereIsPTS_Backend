@@ -11,4 +11,4 @@ sudo pip install -r reqirements.txt
 export FLASK_CONFIG="production"
 
 # Migrate database to newest
-python manage.py upgrade
+python3 manage.py upgrade

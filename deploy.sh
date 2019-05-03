@@ -12,6 +12,3 @@ export FLASK_CONFIG="production"
 
 # Migrate database to newest
 python manage.py upgrade
-
-# Run server
-pyenv/bin/gunicorn "app:create_app()"

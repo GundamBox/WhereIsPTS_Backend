@@ -18,9 +18,6 @@ sudo apt-get install -y supervisor
 # Virtualenv
 sudo apt-get install -y virtualenv
 
-# Make run_production executable
-sudo chmod u+x boot_production.sh
-
 # Install python common package
 virtualenv pyenv --python=python3
 source pyenv/bin/activate
@@ -31,3 +28,6 @@ sudo cp config_example.py config.py
 
 # Copy Supervisor config
 sudo cp WhereIsPTS_API.conf /etc/supervisor/conf.d/WhereIsPTS_API.conf
+
+# Make run_production executable
+sudo chmod u+x boot.sh

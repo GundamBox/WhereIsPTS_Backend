@@ -2,15 +2,21 @@
 
 ## Table of Contents
 
+<!-- TOC -->
+
 - [Where is PTS](#where-is-pts)
-  - [Table of Contents](#table-of-contents)
-  - [Introduction](#introduction)
-    - [What is PTS](#what-is-pts)
-  - [Installation](#installation)
-    - [Dependencies](#dependencies)
-    - [Environment](#environment)
-  - [Usage](#usage)
-  - [API documents](#api-documents)
+    - [Table of Contents](#table-of-contents)
+    - [Introduction](#introduction)
+        - [What is PTS](#what-is-pts)
+    - [Installation](#installation)
+        - [Dependencies](#dependencies)
+        - [Environment](#environment)
+    - [Usage](#usage)
+        - [Deploy](#deploy)
+        - [Run Unitttest](#run-unitttest)
+    - [API documents](#api-documents)
+
+<!-- /TOC -->
 
 ## Introduction
 
@@ -24,72 +30,75 @@ PTS is 'Public Television Service Foundation'
 
 This is [english link](http://eng.pts.org.tw/)
 
-
-
 ## Installation
 
 ### Dependencies
 
 * PostgreSQL
+* Postgis
 * libpq-dev
-
-```bash
-# libpq-dev
-sudo apt-get install libpq-dev
-# PostgreSQL
-sudo apt-get install postgresql postgresql-contrib
-# PostGIS
-sudo add-apt-repository ppa:ubuntugis/ppa
-sudo apt-get update
-sudo apt-get install postgis
-# Supervisor
-sudo apt-get install supervisor
-```
 
 ### Environment
 
-- **development**
+1. **Install commom environment**
 
     ```bash
     sh ./install.sh
-    source pyenv/bin/activate
-    pip install -r requirements/dev.txt
     ```
 
-- **prodution**
+2. **Install python environment**
 
-    ```bash
-    sh ./install.sh
-    source pyenv/bin/activate
-    pip install -r requirements/prod.txt
-    ```
+    - **development**
+
+        ```bash
+        pip3 install -r requirements/dev.txt
+        ```
+
+    - **prodution**
+
+        ```bash
+        pip3 install -r requirements/prod.txt
+        ```
 
 ## Usage
 
 1. **export environment**
 
-```bash
-export FLASK_CONFIG="<env>"
-# `<env>` can be {development, testing, production, default}
-# export FLASK_CONFIG="development"
-```
+    ```bash
+    export FLASK_CONFIG="<env>"
+    # `<env>` can be {development, testing, production, default}
+    # export FLASK_CONFIG="development"
+    ```
 
 2. **edit config.py**
 
-```bash
-vim config.py
-```
+    ```bash
+    vim config.py
+    ```
 
 3. **migrate database**
 
-```bash
-python manage.py db upgrade
-```
+    ```bash
+    python3 manage.py db upgrade
+    ```
 
 4. **run**
 
+    ```bash
+    python3 manage.py run
+    ```
+
+### Deploy
+
 ```bash
-python manage.py run
+sh ./deploy.sh
+```
+
+### Run Unitttest
+
+```bash
+sh ./tests/build.sh
+env FLASK_CONFIG='testing' sudo -E python manage.py test
 ```
 
 ## API documents

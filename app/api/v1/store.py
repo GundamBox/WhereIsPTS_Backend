@@ -57,12 +57,17 @@ def create_store() -> Response:
             'switchable' not in request_data:
         return Response(status=400)
 
+    if request.headers.getlist("X-Forwarded-For"):
+        last_ip = request.headers.getlist("X-Forwarded-For")[0]
+    else:
+        last_ip = request.remote_addr
+
     store = Store(name=request_data['name'],
                   lat=float(request_data['lat']),
                   lng=float(request_data['lng']),
                   address=request_data['address'],
                   switchable=str2bool(request_data['switchable']),
-                  last_ip=request.remote_addr)
+                  last_ip=last_ip)
     success = store.create()
 
     if success:
@@ -92,7 +97,10 @@ def edit_store(sid: int) -> Response:
             request_data.get('switchable', str(store_json['switchable'])))
 
         store.lastModified = datetime.datetime.now()
-        store.last_ip = request.remote_addr
+        if request.headers.getlist("X-Forwarded-For"):
+            store.last_ip = request.headers.getlist("X-Forwarded-For")[0]
+        else:
+            store.last_ip = request.remote_addr
         success = store.update()
 
         if success:
@@ -115,7 +123,10 @@ def delete_store(sid):
             channel_vote.vote_count for channel_vote in store.votes)
 
         store.lastModified = datetime.datetime.now()
-        store.last_ip = request.remote_addr
+        if request.headers.getlist("X-Forwarded-For"):
+            store.last_ip = request.headers.getlist("X-Forwarded-For")[0]
+        else:
+            store.last_ip = request.remote_addr
 
         if store.disable_vote >= vote_sum * disable_threshold:
             store.enable = False

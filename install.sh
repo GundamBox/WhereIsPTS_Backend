@@ -13,17 +13,8 @@ sudo add-apt-repository -y ppa:ubuntugis/ppa
 sudo apt-get update
 sudo apt-get install -y postgis
 
-# Supervisor
-sudo apt-get install -y supervisor
-
 # Install python package
 pip3 install -r requirements/common.txt
 
 # Make config
 sudo cp config_example.py config.py
-
-# Copy Supervisor config
-sudo cp WhereIsPTS_API.conf /etc/supervisor/conf.d/WhereIsPTS_API.conf
-
-# Make run_production executable
-sudo chmod u+x boot.sh

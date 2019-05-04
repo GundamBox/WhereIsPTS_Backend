@@ -9,4 +9,4 @@ sudo -u postgres -H -- psql -c "SELECT 1 FROM pg_database WHERE datname = 'where
 # Create extension
 sudo -u postgres -H -- psql -d whereispts_test -c "CREATE EXTENSION IF NOT postgis;"
 
-sudo -E python3 manage.py test
+env FLASK_CONFIG='testing' sudo -E python3 manage.py upgrade

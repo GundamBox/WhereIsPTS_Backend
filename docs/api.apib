@@ -34,20 +34,29 @@ DELETE  : To delete resource
 
 + Response 201 (application/json)
 
+
         {
-            "sid": 5,
-            "name": "鋼彈販賣店",
-            "location": [30, 120],
             "address": "高雄市鳳山區大明路",
+            "last_modified": "2019-05-03T13:45:21.134586+00:00",
+            "location": [
+                30,
+                120
+            ],
+            "name": "鋼彈販賣店",
+            "sid": 500,
             "switchable": true,
-            "last_modified': "2019-05-03T13:45:21.134586+00:00",
             "votes": [
                 {
                     "cid": 12,
                     "vote_count": 1
+                },
+                {
+                    "cid": 8,
+                    "vote_count": 1
                 }
             ]
         }
+
 
 + Response 404
 
@@ -109,17 +118,9 @@ DELETE  : To delete resource
 
 + Response 204
 
-+ Response 404 (application/json)
++ Response 404
 
-        {
-            "error": "Store Not Found"
-        }
-
-+ Response 500 (application/json)
-
-        {
-            "error": "Internal Server Error"
-        }
++ Response 500
 
 ## List Stores [/store/list?{name,lat,lng,radius,page}]
 
@@ -128,25 +129,44 @@ DELETE  : To delete resource
     + lat (required, Number) ... central location of map
     + lng (required, Number) ... central location of map
     + radius (optional, Number, `5`) ... query radius in kilo-meter, maximum is `20`
-    + page (required, Number) ... page number of pagination
+    + page (optional, Number, `1`) ... page number of pagination
 
 ### List Store [GET]
 
 + Response 201 (application/json)
 
-        {
-            "result": [
-            {...},
-            {...}
-            ],
-            "total": 30
-        }
 
-+ Response 500 (application/json)
+    {
+        "result": [
+            {
+                "address": "\"高雄市鳳山區大明路\"",
+                "last_modified": "2019-05-05T10:02:25.711448+00:00",
+                "location": [
+                    30,
+                    120
+                ],
+                "name": "\"鋼彈專賣店\"",
+                "sid": 9,
+                "switchable": true,
+                "votes": []
+            },
+            {
+                "address": "\"高雄市鳳山區大明路\"",
+                "last_modified": "2019-05-05T09:59:06.828556+00:00",
+                "location": [
+                    30,
+                    120
+                ],
+                "name": "\"鋼彈專賣店\"",
+                "sid": 8,
+                "switchable": true,
+                "votes": []
+            }
+        ],
+        "total": 2
+    }
 
-        {
-            "error": "Internal Server Error"
-        }
++ Response 500
 
 ## Add a Store [/store]
 

@@ -59,6 +59,7 @@ class Store(Base):
         radius = min(radius, 20000.0)
 
         store_list = cls.query \
+            .filter(Store.enable == True) \
             .filter(ST_Distance_Sphere(Store.location, 'POINT({lat} {lng})'.format(lat=lat, lng=lng)) <= radius)
 
         if name:

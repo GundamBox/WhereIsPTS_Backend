@@ -6,6 +6,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 sqlalchemyhandler = SQLAlchemyHandler()
 
+
 def get_secret(setting, secret=os.environ):
     try:
         return secret[setting]
@@ -13,7 +14,6 @@ def get_secret(setting, secret=os.environ):
         error_msg = 'Should set the {} enviroment variable'.format(setting)
         print(error_msg)
         return None
-
 
 class Config:
     SECRET_KEY = get_secret('SECRET_KEY') or 'hard to guess string'

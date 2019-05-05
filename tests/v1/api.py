@@ -2,7 +2,7 @@ import random
 import string
 import time
 import unittest
-
+from sqlalchemy import text
 from flask_migrate import Migrate
 
 from app import create_app, db
@@ -14,16 +14,12 @@ class WhereIsPTSApiTestCase(unittest.TestCase):
     def setUpClass(cls):
         cls.store = []
         cls.app = create_app('testing')
-        cls.app.app_context().push()
 
         db.init_app(cls.app)
-        migrate = Migrate(cls.app, db)
 
         cls.db = db
         cls.db.drop_all()
         cls.db.create_all()
-
-        from sqlalchemy import text
 
         sql = text('''
 INSERT INTO channel(id, name)
@@ -58,9 +54,10 @@ VALUES (1,'公視新聞'),
                 'address': '台南市東區崇明路73號',
                 'switchable': 'false'
             })
+            self.assertEqual(resp.status_code, 201)
+
             store_json = resp.get_json()
             store_id = store_json['sid']
-            self.assertEqual(resp.status_code, 201)
             self.assertEqual(store_id, 1)
 
         with self.app.test_client() as client:
@@ -127,9 +124,10 @@ VALUES (1,'公視新聞'),
             resp = client.put('/api/v1/store/2', data={
                 'switchable': 'true'
             })
+            self.assertEqual(resp.status_code, 201)
 
             store_json = resp.get_json()
-            self.assertEqual(resp.status_code, 201)
+
             self.assertEqual(store_json['sid'], 2)
             self.assertEqual(store_json['name'], '李師傅牛肉拉麵')
             self.assertAlmostEqual(

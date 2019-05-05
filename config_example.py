@@ -1,10 +1,10 @@
 import os
 
-def get_secret(setting):
+def get_secret(setting, secret=os.environ):
     try:
-        return os.environ[setting]
+        return secret[setting]
     except KeyError:
-        error_msg = "Should set the {} enviroment variable".format(setting)
+        error_msg = 'Should set the {} enviroment variable'.format(setting)
         print(error_msg)
         return None
 

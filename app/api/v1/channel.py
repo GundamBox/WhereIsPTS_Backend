@@ -2,7 +2,6 @@ import datetime
 
 from flask import Blueprint, Response, jsonify, request
 
-from app.commom.utils import str2bool
 from app.models import Channel, channel_schema, channels_schema
 
 channel_controller = Blueprint('channel_v1', __name__)

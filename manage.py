@@ -8,7 +8,6 @@ from flask_alembic import alembic_click
 from flask_migrate.cli import db as db_cli
 
 from app import create_app
-from app.commom import utils
 from tests.v1.api import build_api_test_suite
 
 

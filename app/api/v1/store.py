@@ -1,6 +1,6 @@
 import datetime
 
-from flask import Blueprint, Response, current_app, jsonify, request
+from flask import Blueprint, Response, jsonify, request
 
 from app.commom.utils import str2bool
 from app.models import Store, store_schema, stores_schema

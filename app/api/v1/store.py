@@ -16,7 +16,7 @@ def get_store(sid: int) -> Response:
     store = Store.read(sid)
     if store:
         result = store_schema.dump(store)
-        return jsonify(result.data), 200
+        return jsonify(result.data), 201
     return Response(status=404)
 
 

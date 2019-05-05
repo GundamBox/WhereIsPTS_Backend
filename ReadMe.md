@@ -5,16 +5,16 @@
 <!-- TOC -->
 
 - [Where is PTS](#where-is-pts)
-    - [Table of Contents](#table-of-contents)
-    - [Introduction](#introduction)
-        - [What is PTS](#what-is-pts)
-    - [Installation](#installation)
-        - [Dependencies](#dependencies)
-        - [Environment](#environment)
-    - [Usage](#usage)
-        - [Deploy](#deploy)
-        - [Run Unitttest](#run-unitttest)
-    - [API documents](#api-documents)
+  - [Table of Contents](#table-of-contents)
+  - [Introduction](#introduction)
+    - [What is PTS](#what-is-pts)
+  - [Installation](#installation)
+    - [Dependencies](#dependencies)
+    - [Environment](#environment)
+  - [Usage](#usage)
+    - [Deploy](#deploy)
+    - [Run Unitttest](#run-unitttest)
+  - [API documents](#api-documents)
 
 <!-- /TOC -->
 
@@ -74,6 +74,13 @@ This is [english link](http://eng.pts.org.tw/)
 
     ```bash
     vim config.py
+    ```
+
+    - you can use `secret` module generating the hash key
+
+    ```bash
+    import secrets
+    secrets.token_hex(nbytes=16)
     ```
 
 3. **migrate database**

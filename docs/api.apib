@@ -35,38 +35,50 @@ DELETE  : To delete resource
 + Response 201 (application/json)
 
         {
-            "name": "store name",
-            "lat": "store latitude",
-            "lng": "store longtitude",
-            "address": "store address",
-            "news": "tv channel that store played",
-            "switchable": "tv channels is switchable?",
+            "sid": 5,
+            "name": "鋼彈販賣店",
+            "location": [30, 120],
+            "address": "高雄市鳳山區大明路",
+            "switchable": true,
+            "last_modified': "2019-05-03T13:45:21.134586+00:00",
+            "votes": [
+                {
+                    "cid": 12,
+                    "vote_count": 1
+                }
+            ]
         }
 
-+ Response 404 (application/json)
++ Response 404
 
-        {
-            "error": "Store Not Found"
-        }
-
-+ Response 500 (application/json)
-
-        {
-            "error": "Internal Server Error"
-        }
++ Response 500
 
 ### Modify a Store [PUT]
 
-+ Request (application/json)
++ Request (multipart/form-data, boundary=WebKitFormBoundary7MA4YWxkTrZu0gW--)
 
-        {
-            "name": "store name",
-            "lat": "store latitude",
-            "lng": "store longtitude",
-            "address": "store address",
-            "news": "tv channel that store played",
-            "switchable": "tv channels is switchable?",
-        }
+
+        ------WebKitFormBoundary7MA4YWxkTrZu0gW--,
+        Content-Disposition: form-data; name="name"
+
+        "鋼彈專賣店"
+        ------WebKitFormBoundary7MA4YWxkTrZu0gW--
+        Content-Disposition: form-data; name="lat"
+
+        30
+        ------WebKitFormBoundary7MA4YWxkTrZu0gW--
+        Content-Disposition: form-data; name="lng"
+
+        120
+        ------WebKitFormBoundary7MA4YWxkTrZu0gW--
+        Content-Disposition: form-data; name="address"
+
+        "高雄市鳳山區大明路"
+        ------WebKitFormBoundary7MA4YWxkTrZu0gW--
+        Content-Disposition: form-data; name="switchable"
+
+        true
+        ------WebKitFormBoundary7MA4YWxkTrZu0gW--
 
 + Response 201 (application/json)
 
@@ -77,26 +89,21 @@ DELETE  : To delete resource
     + Body
 
             {
-                "store_id": 1,
+                "address": "\"高雄市鳳山區大明路\"",
+                "last_modified": "2019-05-05T09:59:06.828556+00:00",
+                "location": [
+                    30,
+                    120
+                ],
+                "name": "\"鋼彈專賣店\"",
+                "sid": 8,
+                "switchable": true,
+                "votes": []
             }
 
-+ Response 400 (application/json)
++ Response 404
 
-        {
-            "error": "Request Format Wrong"
-        }
-
-+ Response 404 (application/json)
-
-        {
-            "error": "Store Not Found"
-        }
-
-+ Response 500 (application/json)
-
-        {
-            "error": "Internal Server Error"
-        }
++ Response 500
 
 ### Delete a Store (Voting) [DELETE]
 
@@ -147,34 +154,54 @@ add a single restaurant
 
 ### Add a Store [POST]
 
-+ Request (application/json)
++ Request (multipart/form-data, boundary=WebKitFormBoundary7MA4YWxkTrZu0gW--)
 
-        {
-            "name": "store name",
-            "lat": "store latitude",
-            "lng": "store longtitude",
-            "address": "store address",
-            "news": "tv channel that store played",
-            "switchable": "tv channels is switchable?",
-        }
+
+        ------WebKitFormBoundary7MA4YWxkTrZu0gW--,
+        Content-Disposition: form-data; name="name"
+
+        "鋼彈專賣店"
+        ------WebKitFormBoundary7MA4YWxkTrZu0gW--
+        Content-Disposition: form-data; name="lat"
+
+        30
+        ------WebKitFormBoundary7MA4YWxkTrZu0gW--
+        Content-Disposition: form-data; name="lng"
+
+        120
+        ------WebKitFormBoundary7MA4YWxkTrZu0gW--
+        Content-Disposition: form-data; name="address"
+
+        "高雄市鳳山區大明路"
+        ------WebKitFormBoundary7MA4YWxkTrZu0gW--
+        Content-Disposition: form-data; name="switchable"
+
+        true
+        ------WebKitFormBoundary7MA4YWxkTrZu0gW--
 
 + Response 201 (application/json)
 
         {
-            "store_id": 1,
+            "address": "\"高雄市鳳山區大明路\"",
+            "last_modified": "2019-05-05T09:59:06.828556+00:00",
+            "location": [
+                30,
+                120
+            ],
+            "name": "\"鋼彈專賣店\"",
+            "sid": 8,
+            "switchable": true,
+            "votes": []
         }
 
-+ Response 400 (application/json)
++ Response 400
 
-        {
-            "error": "Request Format Wrong"
-        }
++ Response 500 (text/plain)
 
-+ Response 500 (application/json)
-
-        {
-            "error": "Internal Server Error"
-        }
+    <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+    <title>404 Not Found</title>
+    <h1>Not Found</h1>
+    <p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
 
 ## Vote [/vote/store/{sid}]
 

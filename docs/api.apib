@@ -66,25 +66,32 @@ DELETE  : To delete resource
 
 + Request (multipart/form-data, boundary=WebKitFormBoundary7MA4YWxkTrZu0gW--)
 
+    + Body
 
-        ------WebKitFormBoundary7MA4YWxkTrZu0gW--,
+
+        ------WebKitFormBoundary7MA4YWxkTrZu0gW--
         Content-Disposition: form-data; name="name"
+        Content-Type: text/plain
 
         "鋼彈專賣店"
         ------WebKitFormBoundary7MA4YWxkTrZu0gW--
         Content-Disposition: form-data; name="lat"
+        Content-Type: text/plain
 
         30
         ------WebKitFormBoundary7MA4YWxkTrZu0gW--
         Content-Disposition: form-data; name="lng"
+        Content-Type: text/plain
 
         120
         ------WebKitFormBoundary7MA4YWxkTrZu0gW--
         Content-Disposition: form-data; name="address"
+        Content-Type: text/plain
 
         "高雄市鳳山區大明路"
         ------WebKitFormBoundary7MA4YWxkTrZu0gW--
         Content-Disposition: form-data; name="switchable"
+        Content-Type: text/plain
 
         true
         ------WebKitFormBoundary7MA4YWxkTrZu0gW--
@@ -136,35 +143,37 @@ DELETE  : To delete resource
 + Response 201 (application/json)
 
 
-    {
-        "result": [
-            {
-                "address": "\"高雄市鳳山區大明路\"",
-                "last_modified": "2019-05-05T10:02:25.711448+00:00",
-                "location": [
-                    30,
-                    120
-                ],
-                "name": "\"鋼彈專賣店\"",
-                "sid": 9,
-                "switchable": true,
-                "votes": []
-            },
-            {
-                "address": "\"高雄市鳳山區大明路\"",
-                "last_modified": "2019-05-05T09:59:06.828556+00:00",
-                "location": [
-                    30,
-                    120
-                ],
-                "name": "\"鋼彈專賣店\"",
-                "sid": 8,
-                "switchable": true,
-                "votes": []
-            }
-        ],
-        "total": 2
-    }
+        {
+            "result": [
+                {
+                    "address": "\"高雄市鳳山區大明路\"",
+                    "last_modified": "2019-05-05T10:02:25.711448+00:00",
+                    "location": [
+                        30,
+                        120
+                    ],
+                    "name": "\"鋼彈專賣店\"",
+                    "sid": 9,
+                    "switchable": true,
+                    "votes": []
+                },
+                {
+                    "address": "\"高雄市鳳山區大明路\"",
+                    "last_modified": "2019-05-05T09:59:06.828556+00:00",
+                    "location": [
+                        30,
+                        120
+                    ],
+                    "name": "\"鋼彈專賣店\"",
+                    "sid": 8,
+                    "switchable": true,
+                    "votes": []
+                }
+            ],
+            "total": 2
+        }
+
++ Response 400
 
 + Response 500
 
@@ -176,25 +185,31 @@ add a single restaurant
 
 + Request (multipart/form-data, boundary=WebKitFormBoundary7MA4YWxkTrZu0gW--)
 
+    + Body
 
         ------WebKitFormBoundary7MA4YWxkTrZu0gW--,
         Content-Disposition: form-data; name="name"
+        Content-Type: text/plain
 
         "鋼彈專賣店"
         ------WebKitFormBoundary7MA4YWxkTrZu0gW--
         Content-Disposition: form-data; name="lat"
+        Content-Type: text/plain
 
         30
         ------WebKitFormBoundary7MA4YWxkTrZu0gW--
         Content-Disposition: form-data; name="lng"
+        Content-Type: text/plain
 
         120
         ------WebKitFormBoundary7MA4YWxkTrZu0gW--
         Content-Disposition: form-data; name="address"
+        Content-Type: text/plain
 
         "高雄市鳳山區大明路"
         ------WebKitFormBoundary7MA4YWxkTrZu0gW--
         Content-Disposition: form-data; name="switchable"
+        Content-Type: text/plain
 
         true
         ------WebKitFormBoundary7MA4YWxkTrZu0gW--
@@ -202,7 +217,7 @@ add a single restaurant
 + Response 201 (application/json)
 
         {
-            "address": "\"高雄市鳳山區大明路\"",
+            "address": "高雄市鳳山區大明路",
             "last_modified": "2019-05-05T09:59:06.828556+00:00",
             "location": [
                 30,
@@ -216,12 +231,7 @@ add a single restaurant
 
 + Response 400
 
-+ Response 500 (text/plain)
-
-    <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
-    <title>404 Not Found</title>
-    <h1>Not Found</h1>
-    <p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
++ Response 500
 
 ## Vote [/vote/store/{sid}]
 
@@ -230,34 +240,46 @@ add a single restaurant
 
 ### Vote for a wanted channel for a specific restaurant [POST]
 
-+ Request (application/json)
++ Request (multipart/form-data, boundary=------WebKitFormBoundary7MA4YWxkTrZu0gW--)
 
-        {
-            "channel_id": 1,
-        }
+    + Body
+
+        ------WebKitFormBoundary7MA4YWxkTrZu0gW--
+        Content-Disposition: form-data; name="cid"
+        Content-Type: text/plain
+
+        12
+        ------WebKitFormBoundary7MA4YWxkTrZu0gW--
 
 + Response 201 (application/json)
 
         {
-            "name": "store name",
-            "lat": "store latitude",
-            "lng": "store longtitude",
-            "address": "store address",
-            "news": "tv channel that store played",
-            "switchable": "tv channels is switchable?",
+            "address": "高雄市鳳山區大明路",
+            "last_modified": "2019-05-03T13:45:21.134586+00:00",
+            "location": [
+                30,
+                120
+            ],
+            "name": "鋼彈販賣店",
+            "sid": 8,
+            "switchable": true,
+            "votes": [
+                {
+                    "cid": 12,
+                    "vote_count": 2
+                },
+                {
+                    "cid": 2,
+                    "vote_count": 1
+                }
+            ]
         }
 
-+ Response 404 (application/json)
++ Response 400
 
-        {
-            "error": "Store Not Found"
-        }
++ Response 404
 
-+ Response 500 (application/json)
-
-        {
-            "error": "Internal Server Error"
-        }
++ Response 500
 
 ## Channel Collection [/channels]
 
@@ -265,38 +287,85 @@ add a single restaurant
 
 + Response 201 (application/json)
 
+
         [
             {
-                "channel_id": 1,
-                "channel_name": "PTS"
+                "cid": 2,
+                "name": "TVBS新聞"
+            },
+            {
+                "cid": 7,
+                "name": "三立新聞"
+            },
+            {
+                "cid": 13,
+                "name": "不是新聞"
+            },
+            {
+                "cid": 3,
+                "name": "中天新聞"
+            },
+            {
+                "cid": 5,
+                "name": "中視新聞"
+            },
+            {
+                "cid": 1,
+                "name": "公視新聞"
+            },
+            {
+                "cid": 11,
+                "name": "壹電視新聞"
+            },
+            {
+                "cid": 9,
+                "name": "年代新聞"
+            },
+            {
+                "cid": 8,
+                "name": "東森新聞"
+            },
+            {
+                "cid": 4,
+                "name": "民視新聞"
+            },
+            {
+                "cid": 6,
+                "name": "華視新聞"
+            },
+            {
+                "cid": 10,
+                "name": "非凡新聞"
+            },
+            {
+                "cid": 12,
+                "name": "體育新聞"
             }
         ]
 
-+ Response 500 (application/json)
-
-        {
-            "error": "Internal Server Error"
-        }
++ Response 500
 
 ### Add a Channel [POST]
 
-+ Request (application/json)
++ Request (multipart/form-data; boundary=------WebKitFormBoundary7MA4YWxkTrZu0gW--)
 
-        {
-            "channel_name": "PTS",
-        }
+    + Body
+
+        ------WebKitFormBoundary7MA4YWxkTrZu0gW--
+        Content-Disposition: form-data; name="name"
+        Content-Type: text/plain
+
+        Fox News
+        ------WebKitFormBoundary7MA4YWxkTrZu0gW--
 
 + Response 201 (application/json)
 
         {
-            "channel_id": 1,
+            "cid": 1,
+            "name": "Fox News"
         }
 
-+ Response 500 (application/json)
-
-        {
-            "error": "Internal Server Error"
-        }
++ Response 500
 
 ## Qeury About a Specific Channel [/channel/{cid}]
 
@@ -308,43 +377,34 @@ add a single restaurant
 + Response 201 (application/json)
 
         {
-            "channel_id": 1
+            "cid": 1,
+            "name": "公視新聞"
         }
 
-+ Response 404 (application/json)
++ Response 404
 
-        {
-            "error": "Channel Not Found"
-        }
-
-+ Response 500 (application/json)
-
-        {
-            "error": "Internal Server Error"
-        }
++ Response 500
 
 ### Modify a Specific Channel [PUT]
 
-+ Request (application/json)
++ Request (multipart/form-data; boundary=------WebKitFormBoundary7MA4YWxkTrZu0gW--)
 
-        {
-            "channel_name": "PTS"
-        }
+    + Body
+
+        ------WebKitFormBoundary7MA4YWxkTrZu0gW--
+        Content-Disposition: form-data; name="name"
+        Content-Type: text/plain
+
+        公視新聞
+        ------WebKitFormBoundary7MA4YWxkTrZu0gW--
 
 + Response 201 (application/json)
 
         {
-            "channel_id": 1
+            "cid": 1,
+            "name": "公視新聞"
         }
 
-+ Response 404 (application/json)
++ Response 404
 
-        {
-            "error": "Channel Not Found"
-        }
-
-+ Response 500 (application/json)
-
-        {
-            "error": "Internal Server Error"
-        }
++ Response 500

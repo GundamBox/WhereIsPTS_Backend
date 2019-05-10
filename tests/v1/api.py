@@ -7,7 +7,9 @@ from flask_migrate import Migrate
 
 from os import path
 import sys
+
 sys.path.append(path.abspath(path.join(path.dirname(__file__), '../../')))
+
 
 from app import create_app, db
 

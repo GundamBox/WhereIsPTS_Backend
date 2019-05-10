@@ -60,10 +60,11 @@ VALUES (1,'公視新聞'),
                 'address': '台南市東區崇明路73號',
                 'switchable': 'false'
             })
-            self.assertEqual(resp.status_code, 201)
 
             store_json = resp.get_json()
             store_id = store_json['sid']
+
+            self.assertEqual(resp.status_code, 201)
             self.assertEqual(store_id, 1)
 
         with self.app.test_client() as client:
@@ -109,7 +110,7 @@ VALUES (1,'公視新聞'),
     def test_store_read_list(self):
         with self.app.test_client() as client:
             resp = client.get(
-                '/api/v1/store/list?lat=22.982320&lng=120.215007')
+                '/api/v1/store/list?lat=22.980661&lng=120.217050')
             self.assertEqual(resp.status_code, 200)
             result_json = resp.get_json()
 
@@ -171,7 +172,7 @@ VALUES (1,'公視新聞'),
             store_json = resp.get_json()
             votes = store_json['votes']
 
-            self.assertEqual(resp.status_code, 200)
+            self.assertEqual(resp.status_code, 201)
             self.assertEqual(votes[0]['vote_count'], 2)
             self.assertEqual(votes[1]['vote_count'], 1)
 

@@ -3,6 +3,7 @@ pyenv/
 *.pyc
 *.db
 *.txt
+config.py
 
 ### Python ###
 # Byte-compiled / optimized / DLL files

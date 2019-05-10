@@ -5,16 +5,16 @@
 <!-- TOC -->
 
 - [Where is PTS](#where-is-pts)
-    - [Table of Contents](#table-of-contents)
-    - [Introduction](#introduction)
-        - [What is PTS](#what-is-pts)
-    - [Installation](#installation)
-        - [Dependencies](#dependencies)
-        - [Environment](#environment)
-    - [Usage](#usage)
-        - [Deploy](#deploy)
-        - [Run Unitttest](#run-unitttest)
-    - [API documents](#api-documents)
+  - [Table of Contents](#table-of-contents)
+  - [Introduction](#introduction)
+    - [What is PTS](#what-is-pts)
+  - [Installation](#installation)
+    - [Dependencies](#dependencies)
+    - [Environment](#environment)
+  - [Usage](#usage)
+    - [Deploy](#deploy)
+    - [Run Unitttest](#run-unitttest)
+  - [API documents](#api-documents)
 
 <!-- /TOC -->
 
@@ -98,7 +98,8 @@ sh ./deploy.sh
 
 ```bash
 sh ./tests/build.sh
-env FLASK_CONFIG='testing' sudo -E python manage.py test
+env FLASK_CONFIG='testing' coverage run --source=app tests/v1/api.py
+coverage report
 ```
 
 ## API documents

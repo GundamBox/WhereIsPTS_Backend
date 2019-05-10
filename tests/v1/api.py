@@ -5,6 +5,10 @@ import unittest
 from sqlalchemy import text
 from flask_migrate import Migrate
 
+from os import path
+import sys
+sys.path.append(path.abspath(path.join(path.dirname(__file__), '../../')))
+
 from app import create_app, db
 
 
@@ -184,23 +188,5 @@ VALUES (1,'公視新聞'),
     def test_channel_delete(self):
         pass
 
-
-def build_api_test_suite():
-
-    suite = unittest.TestSuite()
-
-    tests = [WhereIsPTSApiTestCase('test_store_create'),
-             WhereIsPTSApiTestCase('test_store_read'),
-             WhereIsPTSApiTestCase('test_store_read_list'),
-             WhereIsPTSApiTestCase('test_store_update'),
-             WhereIsPTSApiTestCase('test_store_delete'),
-             WhereIsPTSApiTestCase('test_vote_store')
-             #  WhereIsPTSApiTestCase('test_channel_create'),
-             #  WhereIsPTSApiTestCase('test_channel_read'),
-             #  WhereIsPTSApiTestCase('test_channel_read_list'),
-             #  WhereIsPTSApiTestCase('test_channel_update'),
-             #  WhereIsPTSApiTestCase('test_channel_delete')
-             ]
-    suite.addTests(tests)
-
-    return suite
+if __name__ == '__main__':
+    unittest.main()

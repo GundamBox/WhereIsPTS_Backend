@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.com/rapirent/WhereIsPTS_API.svg?branch=master)](https://travis-ci.com/rapirent/WhereIsPTS_API)
+[![Coverage Status](https://coveralls.io/repos/github/rapirent/WhereIsPTS_API/badge.svg?branch=master)](https://coveralls.io/github/rapirent/WhereIsPTS_API?branch=master)
+
 # Where is PTS
 
 ## Table of Contents

@@ -82,19 +82,6 @@ VALUES (1,'公視新聞'),
 
     def test_store_read(self):
         with self.app.test_client() as client:
-            resp = client.get('/api/v1/store/1')
-            store_json = resp.get_json()
-            self.assertEqual(resp.status_code, 200)
-            self.assertEqual(store_json['sid'], 1)
-            self.assertEqual(store_json['name'], '和春麵館')
-            self.assertAlmostEqual(
-                store_json['location'][0], 22.980661, places=6)
-            self.assertAlmostEqual(
-                store_json['location'][1], 120.217050, places=6)
-            self.assertEqual(store_json['address'], '台南市東區崇明路73號')
-            self.assertFalse(store_json['switchable'])
-
-        with self.app.test_client() as client:
             resp = client.get('/api/v1/store/2')
             store_json = resp.get_json()
             self.assertEqual(resp.status_code, 200)
@@ -110,17 +97,17 @@ VALUES (1,'公視新聞'),
     def test_store_read_list(self):
         with self.app.test_client() as client:
             resp = client.get(
-                '/api/v1/store/list?lat=22.980661&lng=120.217050')
+                '/api/v1/store/list?lat=22.612640&lng=120.344372')
             self.assertEqual(resp.status_code, 200)
             result_json = resp.get_json()
 
             store_list_json = result_json['result']
             store0 = store_list_json[0]
-            self.assertEqual(store0['sid'], 1)
-            self.assertEqual(store0['name'], '和春麵館')
-            self.assertAlmostEqual(store0['location'][0], 22.980661, places=6)
-            self.assertAlmostEqual(store0['location'][1], 120.217050, places=6)
-            self.assertEqual(store0['address'], '台南市東區崇明路73號')
+            self.assertEqual(store0['sid'], 2)
+            self.assertEqual(store0['name'], '李師傅牛肉拉麵')
+            self.assertAlmostEqual(store0['location'][0], 22.612640, places=6)
+            self.assertAlmostEqual(store0['location'][1], 120.344372, places=6)
+            self.assertEqual(store0['address'], '高雄市鳳山區新康街300號')
             self.assertFalse(store0['switchable'])
 
             count = result_json['total']
@@ -172,7 +159,7 @@ VALUES (1,'公視新聞'),
             store_json = resp.get_json()
             votes = store_json['votes']
 
-            self.assertEqual(resp.status_code, 201)
+            self.assertEqual(resp.status_code, 200)
             self.assertEqual(votes[0]['vote_count'], 2)
             self.assertEqual(votes[1]['vote_count'], 1)
 

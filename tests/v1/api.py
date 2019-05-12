@@ -178,5 +178,20 @@ VALUES (1,'公視新聞'),
     def test_channel_delete(self):
         pass
 
+def build_api_test_suite():
+    suite = unittest.TestSuite()
+
+    tests = [WhereIsPTSApiTestCase('test_store_create'),
+             WhereIsPTSApiTestCase('test_store_read'),
+             WhereIsPTSApiTestCase('test_store_read_list'),
+             WhereIsPTSApiTestCase('test_store_update'),
+             WhereIsPTSApiTestCase('test_store_delete'),
+             WhereIsPTSApiTestCase('test_vote_store')
+             ]
+    suite.addTests(tests)
+
+    return suite
 if __name__ == '__main__':
-    unittest.main()
+    suite = build_api_test_suite()
+    runner = unittest.TextTestRunner(verbosity=2)
+    runner.run(suite)

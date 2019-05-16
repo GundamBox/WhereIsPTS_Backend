@@ -2,11 +2,21 @@
 
 ## Table of Contents
 
-* [Introduction](#Introduction)
-    * [What is PTS](#What_is_PTS)
-* [Dependencies](#Dependencies)
-* [Installation](#Installation)
-* [Usage](#Usage)
+<!-- TOC -->
+
+- [Where is PTS](#where-is-pts)
+    - [Table of Contents](#table-of-contents)
+    - [Introduction](#introduction)
+        - [What is PTS](#what-is-pts)
+    - [Installation](#installation)
+        - [Dependencies](#dependencies)
+        - [Environment](#environment)
+    - [Usage](#usage)
+        - [佈署](#佈署)
+        - [執行單元測試](#執行單元測試)
+    - [API documents](#api-documents)
+
+<!-- /TOC -->
 
 ## Introduction
 
@@ -18,62 +28,82 @@
 
 PTS is [公共電視文化事業基金會](https://www.pts.org.tw/)
 
-## Dependencies
-
-* PostgreSQL
-* libpq-dev
-
 ## Installation
 
-- **development**
+### Dependencies
+
+* PostgreSQL
+* Postgis
+* libpq-dev
+
+### Environment
+
+1. **安裝一般環境**
 
     ```bash
-    sh ./build.sh
-    source pyenv/bin/activate
-    pip install -r requirements/dev.txt
+    sh ./install.sh
     ```
 
-- **prodution**
+2. **安裝 python 環境**
 
-    ```bash
-    sh ./build.sh
-    source pyenv/bin/activate
-    pip install -r requirements/prod.txt
-    ```
+    - **development**
 
-- **heroku**
+        ```bash
+        pip3 install -r requirements/dev.txt
+        ```
 
-    ```bash
-    sh ./build.sh
-    source pyenv/bin/activate
-    pip install -r requirements.txt
-    ```
+    - **prodution**
+
+        ```bash
+        pip3 install -r requirements/prod.txt
+        ```
 
 ## Usage
 
 1. **設定執行環境**
 
-```bash 
-export APP_SETTINGS="<env>"
-# `<env>` can be {dev, test, staging, prod}
-# export APP_SETTINGS="prod"
-```
+    ```bash
+    export FLASK_CONFIG="<env>"
+    # `<env>` can be {development, testing, production, default}
+    # export FLASK_CONFIG="development"
+    ```
 
 2. **設定 config.py**
 
-```bash
-vim config.py
-```
+    ```bash
+    vim config.py
+    ```
 
 3. **migrate database**
 
-```bash
-python manage.py db upgrade
-```
+    ```bash
+    python3 manage.py db upgrade
+    ```
 
 4. **執行server**
 
+    ```bash
+    python3 manage.py run
+    ```
+
+### 佈署
+
 ```bash
-python manage.py run
+sh ./deploy.sh
 ```
 
+### 執行單元測試
+
+```bash
+sh ./tests/build.sh
+env FLASK_CONFIG='testing' sudo -E python manage.py test
+```
+
+## API documents
+
+    ```sh
+    npm install -g aglio
+    # or you can use yarn add
+    aglio -i docs/api.apib --theme-template triple -o index.html
+    python -m http.server
+    ```

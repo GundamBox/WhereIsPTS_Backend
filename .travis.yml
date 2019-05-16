@@ -1,0 +1,29 @@
+language: python
+python:
+  - "3.5"
+install:
+  - "pip3 install -r requirements/dev.txt"
+branches:
+  only:
+    - /^dev.*$/
+    - /^feature.*$/
+services:
+  - postgresql
+addons:
+  postgresql: 9.6
+  apt:
+    packages:
+    - postgresql-9.6-postgis-2.3
+before_script:
+  # The default user for accessing the local PostgreSQL server is postgres with a blank password.
+  - psql -c 'CREATE DATABASE whereispts_test;' -U postgres
+  - psql -c "CREATE USER test_user WITH PASSWORD 'kuoteng';" -U postgres
+  - psql -c 'GRANT ALL PRIVILEGES ON DATABASE whereispts_test TO test_user;' -U postgres
+  - psql -c 'CREATE EXTENSION postgis;' -U postgres -d whereispts_test
+script:
+  - cp config_example.py config.py
+  - coverage run --source=app tests/v1/api.py
+  - coverage report
+  - rm config.py
+after_success:
+  - coveralls

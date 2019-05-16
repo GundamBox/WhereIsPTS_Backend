@@ -34,17 +34,24 @@ class GeoSerializationField(fields.Field):
 class VoteSchema(ma.ModelSchema):
     class Meta:
         model = Vote
+        fields = ('cid', 'vote_count')
+        exclude = ('sid', 'channel', 'store')
 
 
 class ChannelSchema(ma.ModelSchema):
     class Meta:
         model = Channel
+        fields = ('cid', 'name')
+        exclude = ('stores',)
 
 
 class StoreSchema(ma.ModelSchema):
     class Meta:
         model = Store
         model_converter = GeoConverter
+        fields = ('sid', 'name', 'location', 'address',
+                  'switchable', 'last_modified', 'votes')
+        exclude = ('enable', 'disable_vote', 'last_ip')
 
     location = GeoSerializationField(attribute='location')
     votes = fields.Nested(VoteSchema, many=True)

@@ -3,9 +3,12 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+
+## [0.2.0] - 2019-05-04
 ## Added
-- votes, news table
+- votes, channels table
 - implement api versioning
+- use spuervisor, gunicorn
 
 ### Changed
 - adjust folder structure

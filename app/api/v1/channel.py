@@ -1,8 +1,7 @@
 import datetime
 
-from flask import Blueprint, Response, current_app, jsonify, request
+from flask import Blueprint, Response, jsonify, request
 
-from app.commom.utils import str2bool
 from app.models import Channel, channel_schema, channels_schema
 
 channel_controller = Blueprint('channel_v1', __name__)
@@ -31,7 +30,7 @@ def get_channel_list() -> Response:
 def create_channel():
 
     request_data = request.form
-    channel_name = request_data['name']
+    channel_name = str(request_data['name']).strip()
 
     channel = Channel(channel_name)
     success = channel.create()

@@ -2,8 +2,14 @@ import random
 import string
 import time
 import unittest
-
+from sqlalchemy import text
 from flask_migrate import Migrate
+
+from os import path
+import sys
+
+sys.path.append(path.abspath(path.join(path.dirname(__file__), '../../')))
+
 
 from app import create_app, db
 
@@ -14,16 +20,12 @@ class WhereIsPTSApiTestCase(unittest.TestCase):
     def setUpClass(cls):
         cls.store = []
         cls.app = create_app('testing')
-        cls.app.app_context().push()
 
         db.init_app(cls.app)
-        migrate = Migrate(cls.app, db)
 
         cls.db = db
         cls.db.drop_all()
         cls.db.create_all()
-
-        from sqlalchemy import text
 
         sql = text('''
 INSERT INTO channel(id, name)
@@ -58,8 +60,10 @@ VALUES (1,'公視新聞'),
                 'address': '台南市東區崇明路73號',
                 'switchable': 'false'
             })
+
             store_json = resp.get_json()
             store_id = store_json['sid']
+
             self.assertEqual(resp.status_code, 201)
             self.assertEqual(store_id, 1)
 
@@ -78,19 +82,6 @@ VALUES (1,'公視新聞'),
 
     def test_store_read(self):
         with self.app.test_client() as client:
-            resp = client.get('/api/v1/store/1')
-            store_json = resp.get_json()
-            self.assertEqual(resp.status_code, 200)
-            self.assertEqual(store_json['sid'], 1)
-            self.assertEqual(store_json['name'], '和春麵館')
-            self.assertAlmostEqual(
-                store_json['location'][0], 22.980661, places=6)
-            self.assertAlmostEqual(
-                store_json['location'][1], 120.217050, places=6)
-            self.assertEqual(store_json['address'], '台南市東區崇明路73號')
-            self.assertFalse(store_json['switchable'])
-
-        with self.app.test_client() as client:
             resp = client.get('/api/v1/store/2')
             store_json = resp.get_json()
             self.assertEqual(resp.status_code, 200)
@@ -106,17 +97,17 @@ VALUES (1,'公視新聞'),
     def test_store_read_list(self):
         with self.app.test_client() as client:
             resp = client.get(
-                '/api/v1/store/list?lat=22.982320&lng=120.215007')
+                '/api/v1/store/list?lat=22.612640&lng=120.344372')
             self.assertEqual(resp.status_code, 200)
             result_json = resp.get_json()
 
             store_list_json = result_json['result']
             store0 = store_list_json[0]
-            self.assertEqual(store0['sid'], 1)
-            self.assertEqual(store0['name'], '和春麵館')
-            self.assertAlmostEqual(store0['location'][0], 22.980661, places=6)
-            self.assertAlmostEqual(store0['location'][1], 120.217050, places=6)
-            self.assertEqual(store0['address'], '台南市東區崇明路73號')
+            self.assertEqual(store0['sid'], 2)
+            self.assertEqual(store0['name'], '李師傅牛肉拉麵')
+            self.assertAlmostEqual(store0['location'][0], 22.612640, places=6)
+            self.assertAlmostEqual(store0['location'][1], 120.344372, places=6)
+            self.assertEqual(store0['address'], '高雄市鳳山區新康街300號')
             self.assertFalse(store0['switchable'])
 
             count = result_json['total']
@@ -127,9 +118,10 @@ VALUES (1,'公視新聞'),
             resp = client.put('/api/v1/store/2', data={
                 'switchable': 'true'
             })
+            self.assertEqual(resp.status_code, 201)
 
             store_json = resp.get_json()
-            self.assertEqual(resp.status_code, 201)
+
             self.assertEqual(store_json['sid'], 2)
             self.assertEqual(store_json['name'], '李師傅牛肉拉麵')
             self.assertAlmostEqual(
@@ -186,9 +178,7 @@ VALUES (1,'公視新聞'),
     def test_channel_delete(self):
         pass
 
-
 def build_api_test_suite():
-
     suite = unittest.TestSuite()
 
     tests = [WhereIsPTSApiTestCase('test_store_create'),
@@ -197,12 +187,11 @@ def build_api_test_suite():
              WhereIsPTSApiTestCase('test_store_update'),
              WhereIsPTSApiTestCase('test_store_delete'),
              WhereIsPTSApiTestCase('test_vote_store')
-             #  WhereIsPTSApiTestCase('test_channel_create'),
-             #  WhereIsPTSApiTestCase('test_channel_read'),
-             #  WhereIsPTSApiTestCase('test_channel_read_list'),
-             #  WhereIsPTSApiTestCase('test_channel_update'),
-             #  WhereIsPTSApiTestCase('test_channel_delete')
              ]
     suite.addTests(tests)
 
     return suite
+if __name__ == '__main__':
+    suite = build_api_test_suite()
+    runner = unittest.TextTestRunner(verbosity=2)
+    runner.run(suite)

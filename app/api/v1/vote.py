@@ -1,6 +1,6 @@
 import datetime
 
-from flask import Blueprint, Response, current_app, jsonify, request
+from flask import Blueprint, Response, jsonify, request
 
 from app.models import Channel, Store, Vote, store_schema
 

@@ -1,6 +1,11 @@
+[![Build Status](https://travis-ci.com/GundamBox/WhereIsPTS_API.svg?branch=dev)](https://travis-ci.com/GundamBox/WhereIsPTS_API)
+[![Coverage Status](https://coveralls.io/repos/github/GundamBox/WhereIsPTS_API/badge.svg?branch=dev)](https://coveralls.io/github/GundamBox/WhereIsPTS_API?branch=dev)
+
 # Where is PTS
 
 ## Table of Contents
+
+<!-- TOC -->
 
 - [Where is PTS](#where-is-pts)
   - [Table of Contents](#table-of-contents)
@@ -10,7 +15,11 @@
     - [Dependencies](#dependencies)
     - [Environment](#environment)
   - [Usage](#usage)
+    - [Deploy](#deploy)
+    - [Run Unitttest](#run-unitttest)
   - [API documents](#api-documents)
+
+<!-- /TOC -->
 
 ## Introduction
 
@@ -24,79 +33,76 @@ PTS is 'Public Television Service Foundation'
 
 This is [english link](http://eng.pts.org.tw/)
 
-
-
 ## Installation
 
 ### Dependencies
 
 * PostgreSQL
+* Postgis
 * libpq-dev
-
-```bash
-# libpq-dev
-sudo apt-get install libpq-dev
-# PostgreSQL
-sudo apt-get install postgresql postgresql-contrib
-# PostGIS
-sudo add-apt-repository ppa:ubuntugis/ppa
-sudo apt-get update
-sudo apt-get install postgis
-```
 
 ### Environment
 
-- **development**
+1. **Install commom environment**
 
     ```bash
-    sh ./build_venv.sh
-    source pyenv/bin/activate
-    pip install -r requirements/dev.txt
+    sh ./install.sh
     ```
 
-- **prodution**
+2. **Install python environment**
 
-    ```bash
-    sh ./build_venv.sh
-    source pyenv/bin/activate
-    pip install -r requirements/prod.txt
-    ```
+    - **development**
 
-- **heroku**
+        ```bash
+        pip3 install -r requirements/dev.txt
+        ```
 
-    ```bash
-    sh ./build_venv.sh
-    source pyenv/bin/activate
-    pip install -r requirements.txt
-    ```
+    - **prodution**
+
+        ```bash
+        pip3 install -r requirements/prod.txt
+        ```
 
 ## Usage
 
 1. **export environment**
 
-```bash
-export FLASK_CONFIG="<env>"
-# `<env>` can be {development, testing, production, heroku, default}
-# export APP_SETTINGS="prod"
-```
+    ```bash
+    export FLASK_CONFIG="<env>"
+    # `<env>` can be {development, testing, production, default}
+    # export FLASK_CONFIG="development"
+    ```
 
 2. **edit config.py**
 
-```bash
-cp config_example.py config.py
-vim config.py
-```
+    ```bash
+    vim config.py
+    ```
 
 3. **migrate database**
 
-```bash
-python manage.py db upgrade
-```
+    ```bash
+    python3 manage.py db upgrade
+    ```
 
 4. **run**
 
+    ```bash
+    python3 manage.py run
+    ```
+
+### Deploy
+
 ```bash
-python manage.py run
+sh ./deploy.sh
+```
+
+### Run Unitttest
+
+```bash
+sh ./tests/build.sh
+env FLASK_CONFIG='testing' coverage run --source=app tests/v1/api.py
+coverage report
 ```
 
 ## API documents

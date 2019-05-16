@@ -1,9 +1,10 @@
+import logging
 from abc import abstractclassmethod
 
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.inspection import inspect
 
 db = SQLAlchemy()
+log = logging.getLogger(__name__)
 
 
 class Base(db.Model):
@@ -13,9 +14,11 @@ class Base(db.Model):
         try:
             db.session.add(self)
             db.session.commit()
+            log.debug('Create Success')
             return True
         except Exception as e:
             print(e)
+            log.exception('Something get wrong', e)
             return False
 
     @abstractclassmethod
@@ -29,9 +32,10 @@ class Base(db.Model):
     def update(self):
         try:
             db.session.commit()
+            log.debug('Update Success')
             return True
         except Exception as e:
-            print(e)
+            log.exception('Something get wrong', e)
             return False
 
     def delete(self):

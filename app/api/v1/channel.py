@@ -30,7 +30,7 @@ def get_channel_list() -> Response:
 def create_channel():
 
     request_data = request.form
-    channel_name = request_data['name']
+    channel_name = str(request_data['name']).strip()
 
     channel = Channel(channel_name)
     success = channel.create()

@@ -10,8 +10,7 @@ sqlalchemyhandler = SQLAlchemyHandler()
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'hard to guess string'
 
-    WTF_CSRF_SECRET_KEY = os.environ.get(
-        'WTF_CSRF_SECRET_KEY') or 'hard to guess string'
+    WTF_CSRF_SECRET_KEY = os.environ.get('WTF_CSRF_SECRET_KEY') or 'hard to guess string'
 
     RECAPTCHA_PUBLIC_KEY = 'enter_your_public_key'
     RECAPTCHA_PRIVATE_KEY = 'enter_your_private_key'

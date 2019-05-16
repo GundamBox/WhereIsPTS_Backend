@@ -27,8 +27,8 @@ def get_store_list() -> Response:
 
     try:
         args = request.args
-        lat = args.get('lat', 0.0)
-        lng = args.get('lng', 0.0)
+        lat = args['lat']
+        lng = args['lng']
         name = args.get('name', '')
         radius = args.get('radius', 5000.0)
         page = args.get('page', 1)
@@ -42,6 +42,8 @@ def get_store_list() -> Response:
             'result': result.data,
             'total': count
         }), 200
+    except KeyError:
+        return Response(status=400)
     except Exception as e:
         print(e)
         return Response(status=500)

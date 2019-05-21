@@ -1,14 +1,13 @@
 import datetime
 import logging
 
-from flask import Blueprint, Response, jsonify, request
+from flask import Blueprint, Response, current_app, jsonify, request
 
 from app.commom.form import CreateStoreForm, UpdateStoreForm
 from app.commom.utils import str2bool
 from app.models import Store, store_schema, stores_schema
 
 store_controller = Blueprint('store_v1', __name__)
-disable_threshold = 2
 logger = logging.getLogger(__name__)
 
 
@@ -135,7 +134,9 @@ def delete_store(sid):
         else:
             store.last_ip = request.remote_addr
 
-        if store.disable_vote >= vote_sum * disable_threshold:
+        baseline = current_app.config['REPORT_STORE_NOT_EXISTS_BASELINE']
+        disable_threshold = current_app.config['DISABLE_THRESHOLD']
+        if store.disable_vote >= vote_sum * disable_threshold + baseline:
             store.enable = False
         success = store.update()
         if success:

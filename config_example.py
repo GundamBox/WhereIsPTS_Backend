@@ -8,16 +8,23 @@ sqlalchemyhandler = SQLAlchemyHandler()
 
 
 class Config:
-    SECRET_KEY = os.environ.get('SECRET_KEY') or 'hard to guess string'
+    # flask
+    SECRET_KEY = os.environ.get('SECRET_KEY') or \
+        'hard to guess string'
 
-    WTF_CSRF_SECRET_KEY = os.environ.get(
-        'WTF_CSRF_SECRET_KEY') or 'hard to guess string'
+    # flask-wtform
+    WTF_CSRF_SECRET_KEY = os.environ.get('WTF_CSRF_SECRET_KEY') or \
+        'hard to guess string'
     WTF_CSRF_ENABLED = False
 
-    RECAPTCHA_PUBLIC_KEY = 'enter_your_public_key'
-    RECAPTCHA_PRIVATE_KEY = 'enter_your_private_key'
+    # flask-wtform recaptcha
+    RECAPTCHA_PUBLIC_KEY = os.environ.get('RECAPTCHA_PUBLIC_KEY') or \
+        'enter_your_public_key'
+    RECAPTCHA_PRIVATE_KEY = os.environ.get('RECAPTCHA_PRIVATE_KEY') or \
+        'enter_your_private_key'
     RECAPTCHA_OPTIONS = {'theme': 'white'}
 
+    # api config
     REPORT_STORE_NOT_EXISTS_BASELINE = 10
     DISABLE_THRESHOLD = 2
 
@@ -40,7 +47,7 @@ class DevelopmentConfig(Config):
     TESTING = True
     WTF_CSRF_ENABLED = False
     RECAPTCHA_DISABLE = True
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
         'postgresql://<user_name>:<user_password>@localhost/whereispts_dev'
 
     @classmethod
@@ -57,12 +64,11 @@ class TestingConfig(Config):
     TESTING = True
     WTF_CSRF_ENABLED = False
     RECAPTCHA_DISABLE = True
-    SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URL') or \
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
         'postgresql://<user_name>:<user_password>@localhost/whereispts_test'
 
     @classmethod
     def init_app(cls, app):
-        print(cls.SQLALCHEMY_DATABASE_URI)
         logger.setLevel(logging.DEBUG)
         sqlalchemyhandler.setLevel(logging.DEBUG)
 

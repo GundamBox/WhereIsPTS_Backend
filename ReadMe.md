@@ -8,16 +8,16 @@
 <!-- TOC -->
 
 - [Where is PTS](#where-is-pts)
-  - [Table of Contents](#table-of-contents)
-  - [Introduction](#introduction)
-    - [What is PTS](#what-is-pts)
-  - [Installation](#installation)
-    - [Dependencies](#dependencies)
-    - [Environment](#environment)
-  - [Usage](#usage)
-    - [Deploy](#deploy)
-    - [Run Unitttest](#run-unitttest)
-  - [API documents](#api-documents)
+    - [Table of Contents](#table-of-contents)
+    - [Introduction](#introduction)
+        - [What is PTS](#what-is-pts)
+    - [Installation](#installation)
+        - [Dependencies](#dependencies)
+        - [Environment](#environment)
+    - [Usage](#usage)
+        - [Deploy](#deploy)
+        - [Run Unitttest](#run-unitttest)
+    - [API documents](#api-documents)
 
 <!-- /TOC -->
 
@@ -68,9 +68,9 @@ This is [english link](http://eng.pts.org.tw/)
 1. **export environment**
 
     ```bash
-    export FLASK_CONFIG="<env>"
+    export FLASK_ENV="<env>"
     # `<env>` can be {development, testing, production, default}
-    # export FLASK_CONFIG="development"
+    # export FLASK_ENV="development"
     ```
 
 2. **edit config.py**
@@ -101,7 +101,7 @@ sh ./deploy.sh
 
 ```bash
 sh ./tests/build.sh
-env FLASK_CONFIG='testing' coverage run --source=app tests/v1/api.py
+env FLASK_ENV='testing' coverage run --source=app tests/v1/api.py
 coverage report
 ```
 

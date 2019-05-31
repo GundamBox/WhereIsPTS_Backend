@@ -63,9 +63,9 @@ PTS is [公共電視文化事業基金會](https://www.pts.org.tw/)
 1. **設定執行環境**
 
     ```bash
-    export FLASK_CONFIG="<env>"
+    export FLASK_ENV="<env>"
     # `<env>` can be {development, testing, production, default}
-    # export FLASK_CONFIG="development"
+    # export FLASK_ENV="development"
     ```
 
 2. **設定 config.py**
@@ -96,7 +96,7 @@ sh ./deploy.sh
 
 ```bash
 sh ./tests/build.sh
-env FLASK_CONFIG='testing' sudo -E python manage.py test
+env FLASK_ENV='testing' sudo -E python manage.py test
 ```
 
 ## API documents

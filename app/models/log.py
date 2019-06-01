@@ -2,7 +2,7 @@ import logging
 
 from sqlalchemy import Column, DateTime, Integer, Sequence, String, func
 
-from app.commom.database import db
+from app.common.database import db
 
 
 class Log(db.Model):

@@ -4,7 +4,7 @@ import math
 from sqlalchemy import Column, Integer, Sequence, String
 from sqlalchemy.orm import relationship
 
-from app.commom.database import Base, db
+from app.common.database import Base, db
 
 from .vote import Vote
 

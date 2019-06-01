@@ -1,6 +1,6 @@
 import os
 import logging
-from app.commom.utils import SQLAlchemyHandler
+from app.common.utils import SQLAlchemyHandler
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)

@@ -6,7 +6,7 @@ from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_wtf.csrf import CSRFProtect
 
-from app.commom.database import db
+from app.common.database import db
 from app.models.schema import ma
 from config import config
 

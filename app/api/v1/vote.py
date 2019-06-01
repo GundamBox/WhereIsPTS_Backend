@@ -2,6 +2,8 @@ import datetime
 
 from flask import Blueprint, Response, jsonify, request
 
+from app.common.exception import FlaskException
+from app.forms.vote import VoteForm
 from app.models import Channel, Store, Vote, store_schema
 
 vote_controller = Blueprint('vote_v1', __name__)
@@ -9,16 +11,11 @@ vote_controller = Blueprint('vote_v1', __name__)
 
 @vote_controller.route('/vote/store/<int:sid>', methods=['POST'])
 def vote_store_channel(sid):
-
     store = Store.read(sid)
-    if store:
-        request_data = request.form
-        cid = request_data.get('cid', None)
+    form = VoteForm(request.form)
 
-        if not cid:
-            return Response(status=400)
-        else:
-            cid = int(cid)
+    if form.validate():
+        cid = form.data['cid']
 
         idx = -1
         for i, vote in enumerate(store.votes):
@@ -37,5 +34,4 @@ def vote_store_channel(sid):
             result = store_schema.dump(store)
             return jsonify(result.data), 200
         else:
-            return Response(status=500)
-    return Response(status=404)
+            raise FlaskException(message=str(form.errors), status_code=400)

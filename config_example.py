@@ -27,6 +27,10 @@ class Config:
     # api config
     REPORT_STORE_NOT_EXISTS_BASELINE = 10
     DISABLE_THRESHOLD = 2
+    STORE_SEARCH_MIN_RADIUS = 5000.0
+    STORE_SEARCH_MAX_RADIUS = 20000.0
+    STORE_SEARCH_DEFAULT_START_PAGE = 1
+    STORE_SEARCH_DEFAULT_PAGE_SIZE = 50
 
     @classmethod
     def init_app(cls, app):

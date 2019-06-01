@@ -53,10 +53,10 @@ class Store(Base):
             .first()
 
     @classmethod
-    def read_list(cls, lat: float, lng: float, name: str, radius: float = 5000.0, page: int = 1, page_size: int = 50):
+    def read_list(cls, lat: float, lng: float, name: str, radius: float, page: int, page_size: int):
 
-        radius = max(radius, 5000.0)
-        radius = min(radius, 20000.0)
+        radius = max(radius, current_app.config['STORE_SEARCH_MIN_RADIUS'])
+        radius = min(radius, current_app.config['STORE_SEARCH_MAX_RADIUS'])
 
         store_list = cls.query \
             .filter(Store.enable == True) \

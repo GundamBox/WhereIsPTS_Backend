@@ -43,7 +43,7 @@ This is [english link](http://eng.pts.org.tw/)
 
 ### Environment
 
-1. **Install commom environment**
+1. **Install common environment**
 
     ```bash
     sh ./install.sh

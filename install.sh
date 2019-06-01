@@ -4,15 +4,16 @@ get_privilage() {
     if ! [ $(id -u) = 0 ]; then
         export REAL_USER=$(whoami)
         echo "Need root - sudoing..."
-        exec su --preserve-environment -c "sh $0 $@"
+        exec su --preserve-environment -c "$0 $@"
     fi
 }
 
 export_var() {
-    export SECRET_KEY="${SECRET_KEY}"
-    export RECAPTCHA_PUBLIC_KEY="${RECAPTCHA_PUBLIC_KEY}"
-    export RECAPTCHA_PRIVATE_KEY="${RECAPTCHA_PRIVATE_KEY}"
-    export DATABASE_URL="${DATABASE_URL}"
+    echo "export FLASK_ENV=\"${FLASK_ENV}\""
+    echo "export SECRET_KEY=\"${SECRET_KEY}\""
+    echo "export RECAPTCHA_PUBLIC_KEY=\"${RECAPTCHA_PUBLIC_KEY}\""
+    echo "export RECAPTCHA_PRIVATE_KEY=\"${RECAPTCHA_PRIVATE_KEY}\""
+    echo "export DATABASE_URL=\"${DATABASE_URL}\""
 }
 
 get_env_file() {
@@ -133,7 +134,7 @@ generate_gunicorn_boot_script() {
     sudo -u ${REAL_USER} cat > supervisor/boot_flask.sh << EOF
 #!/usr/bin/env bash
 
-$(`export_var`)
+`export_var`
 
 . ${VENV}/bin/activate
 ${VENV}/bin/gunicorn "app:create_app(\"${FLASK_ENV}\")" \\
@@ -143,13 +144,17 @@ ${VENV}/bin/gunicorn "app:create_app(\"${FLASK_ENV}\")" \\
 EOF
 
     chown ${REAL_USER} supervisor/boot_flask.sh
+    chmod +x supervisor/boot_flask.sh
 }
 
 generate_testing_build_script () {
     sudo -u ${REAL_USER} cat > tests/build.sh << EOF
 #!/usr/bin/env bash
 
-$(`export_var`)
+export DATABASE_URL="${PSQL_TEST_DATABASE_URL}"
+
+`declare -f get_privilage`
+get_privilage
 
 # Create production user
 sudo -u postgres -H -- psql -c "SELECT 1 FROM pg_catalog.pg_roles WHERE rolname = '${PSQL_TEST_ROLE_NAME}';" | grep -q 1 || sudo -u postgres -H -- psql -c  "CREATE ROLE ${PSQL_TEST_ROLE_NAME} LOGIN PASSWORD '${PSQL_TEST_ROLE_PWD}';"
@@ -161,9 +166,10 @@ sudo -u postgres -H -- psql -c "SELECT 1 FROM pg_database WHERE datname = '${PSQ
 sudo -u postgres -H -- psql -d ${PSQL_TEST_DB_NAME} -c "CREATE EXTENSION IF NOT EXISTS postgis;"
 
 . ${VENV}/bin/activate
-sudo -u ${REAL_USER} ${VENV}/bin/python manage.py db upgrade
+env FLASK_ENV="testing" sudo -E -u ${REAL_USER} ${VENV}/bin/python manage.py db upgrade
 EOF
     chown ${REAL_USER} tests/build.sh 
+    chmod +x tests/build.sh
 }
 
 generate_deploy_script() {
@@ -171,7 +177,10 @@ generate_deploy_script() {
     sudo -u ${REAL_USER} cat > deploy.sh << EOF
 #!/usr/bin/env bash
 
-$(`export_var`)
+`export_var`
+
+`declare -f get_privilage`
+get_privilage
 
 # install supervisor
 apt-get install -y supervisor
@@ -196,7 +205,7 @@ cp supervisor/${SUPERVISOR_FILE} /etc/supervisor/conf.d/${SUPERVISOR_FILE}
 chmod u+x supervisor/boot.sh
 
 # migrate database to newest
-sudo -u ${REAL_USER} ${VENV}/bin/python manage.py db upgrade
+sudo -u ${SUPERVISOR_USER} ${VENV}/bin/python manage.py db upgrade
 
 # Start supervisor service
 supervisorctl reread
@@ -204,6 +213,7 @@ service supervisor restart
 EOF
 
     chown ${REAL_USER} deploy.sh
+    chmod +x deploy.sh
 }
 
 main() {
@@ -218,6 +228,7 @@ main() {
     generate_deploy_script
 
     cp config_example.py config.py
+    chown ${REAL_USER} config.py
 }
 
 main

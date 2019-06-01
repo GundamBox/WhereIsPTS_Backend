@@ -215,3 +215,8 @@ typings/
 
 # DynamoDB Local files
 .dynamodb/
+
+custom_env.sh
+deploy.sh
+supervisor/*
+tests/build.sh

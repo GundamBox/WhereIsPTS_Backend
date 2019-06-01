@@ -1,7 +1,10 @@
+import traceback
 import logging
 from abc import abstractclassmethod
 
 from flask_sqlalchemy import SQLAlchemy
+
+from app.common.exception import FlaskException
 
 db = SQLAlchemy()
 log = logging.getLogger(__name__)
@@ -15,11 +18,10 @@ class Base(db.Model):
             db.session.add(self)
             db.session.commit()
             log.debug('Create Success')
-            return True
         except Exception as e:
-            print(e)
-            log.exception('Something get wrong', e)
-            return False
+            log.exception('Something get error', e)
+            tb = traceback.format_exc()
+            raise FlaskException(message=tb, status_code=500)
 
     @abstractclassmethod
     def read(cls, *args, **kwargs):
@@ -33,16 +35,15 @@ class Base(db.Model):
         try:
             db.session.commit()
             log.debug('Update Success')
-            return True
         except Exception as e:
-            log.exception('Something get wrong', e)
-            return False
+            log.exception('Something get error', e)
+            tb = traceback.format_exc()
+            raise FlaskException(message=tb, status_code=500)
 
     def delete(self):
         try:
             db.session.delete(self)
             db.session.commit()
-            return True
         except Exception as e:
-            print(e)
-            return False
+            tb = traceback.format_exc()
+            raise FlaskException(message=tb, status_code=500)

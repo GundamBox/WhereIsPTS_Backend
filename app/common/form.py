@@ -2,8 +2,17 @@ from flask_wtf import FlaskForm, RecaptchaField
 from wtforms import BooleanField, DecimalField, StringField, validators
 from wtforms.validators import ValidationError
 
+from app.common.exception import FlaskException
 
-class CreateStoreForm(FlaskForm):
+
+class MyForm(FlaskForm):
+    def validate(self):
+        is_valid = super().validate()
+        if not is_valid:
+            raise FlaskException(message=self.errors, status_code=400)
+        return is_valid
+
+class CreateStoreForm(MyForm):
     name = StringField('name', [validators.DataRequired()])
     lat = DecimalField('lat', [validators.DataRequired()])
     lng = DecimalField('lng', [validators.DataRequired()])
@@ -17,8 +26,7 @@ class CreateStoreForm(FlaskForm):
 
     recaptcha = RecaptchaField()
 
-
-class UpdateStoreForm(FlaskForm):
+class UpdateStoreForm(MyForm):
     name = StringField('name')
     lat = DecimalField('lat')
     lng = DecimalField('lng')

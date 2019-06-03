@@ -132,13 +132,16 @@ VALUES (1,'公視新聞'),
             self.assertTrue(store_json['switchable'])
 
     def test_store_delete(self):
-        with self.app.test_client() as client:
-            resp = client.delete('/api/v1/store/1')
-            self.assertEqual(resp.status_code, 204)
+        baseline = self.app.config['REPORT_STORE_NOT_EXISTS_BASELINE']
+        disable_threshold = self.app.config['DISABLE_THRESHOLD']
+        total_vote = 3 * disable_threshold + baseline
+        for _ in range(total_vote):
+            with self.app.test_client() as client:
+                resp = client.delete('/api/v1/store/2')
+                self.assertEqual(resp.status_code, 204)
 
         with self.app.test_client() as client:
-            resp = client.get('/api/v1/store/1')
-            store_json = resp.get_json()
+            resp = client.get('/api/v1/store/2')
             self.assertEqual(resp.status_code, 404)
 
     def test_vote_store(self):
@@ -185,8 +188,8 @@ def build_api_test_suite():
              WhereIsPTSApiTestCase('test_store_read'),
              WhereIsPTSApiTestCase('test_store_read_list'),
              WhereIsPTSApiTestCase('test_store_update'),
-             WhereIsPTSApiTestCase('test_store_delete'),
-             WhereIsPTSApiTestCase('test_vote_store')
+             WhereIsPTSApiTestCase('test_vote_store'),
+             WhereIsPTSApiTestCase('test_store_delete')
              ]
     suite.addTests(tests)
 

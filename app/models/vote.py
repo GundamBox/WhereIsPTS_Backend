@@ -5,7 +5,8 @@ from sqlalchemy import (Column, ForeignKey, Integer, PrimaryKeyConstraint,
                         Sequence, and_)
 from sqlalchemy.orm import relationship
 
-from app.commom.database import Base, db
+from app.common.database import Base, db
+from app.common.exception import FlaskException
 
 
 class Vote(Base):
@@ -27,9 +28,14 @@ class Vote(Base):
 
     @classmethod
     def read(cls, sid, cid):
-        return cls.query \
+        vote_record =  cls.query \
             .filter(Vote.sid == sid) \
             .filter(Vote.cid == cid).first()
+
+        if vote_record:
+            return vote_record
+        else:
+            raise FlaskException(message='Vote record not found', status_code=404)
 
     @classmethod
     def read_list(cls, sid):

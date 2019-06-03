@@ -13,6 +13,7 @@
         - [Environment](#environment)
     - [Usage](#usage)
         - [佈署](#佈署)
+        - [開發](#開發)
         - [執行單元測試](#執行單元測試)
     - [API documents](#api-documents)
 
@@ -38,65 +39,60 @@ PTS is [公共電視文化事業基金會](https://www.pts.org.tw/)
 
 ### Environment
 
-1. **安裝一般環境**
+1. 設定變數
+
+    複製`default env file` 命名為 `custom env file` 並編輯。
+
+    ```bash
+    cp default_env.sh custom_env.sh
+    ```
+
+    - **VENV**
+        python virtualenv 資料夾路徑
+    - **RECAPTCHA_PUBLIC_KEY**, **RECAPTCHA_PRIVATE_KEY**
+        google recaptcha 金鑰
+    - **PSQL_*_ROLE_NAME**, **PSQL_*_ROLE_PWD**, **PSQL_*_DB_NAME**
+        postgresql 使用者名稱, 密碼, 資料庫名稱
+
+2. **安裝一般環境**
 
     ```bash
     sh ./install.sh
     ```
 
-2. **安裝 python 環境**
-
-    - **development**
-
-        ```bash
-        pip3 install -r requirements/dev.txt
-        ```
-
-    - **prodution**
-
-        ```bash
-        pip3 install -r requirements/prod.txt
-        ```
+    如果遇到無法執行的問題，可以執行`chmod + x ./install.sh`命令為腳本提供可執行權限。
 
 ## Usage
 
-1. **設定執行環境**
+### 佈署
 
-    ```bash
-    export FLASK_CONFIG="<env>"
-    # `<env>` can be {development, testing, production, default}
-    # export FLASK_CONFIG="development"
-    ```
-
-2. **設定 config.py**
+1. **編輯 config.py**
 
     ```bash
     vim config.py
     ```
 
-3. **migrate database**
+2. **部署**
 
     ```bash
-    python3 manage.py db upgrade
+    sh ./deploy.sh
     ```
 
-4. **執行server**
+    如果遇到無法執行的問題，可以執行`chmod + x ./deploy.sh`命令為腳本提供可執行權限。
 
-    ```bash
-    python3 manage.py run
-    ```
+### 開發
 
-### 佈署
+**安裝開發用套件**
 
 ```bash
-sh ./deploy.sh
+pip install -r requirements/dev.txt
 ```
 
 ### 執行單元測試
 
 ```bash
 sh ./tests/build.sh
-env FLASK_CONFIG='testing' sudo -E python manage.py test
+env FLASK_ENV='testing' sudo -E python manage.py test
 ```
 
 ## API documents

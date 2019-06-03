@@ -4,7 +4,8 @@ import math
 from sqlalchemy import Column, Integer, Sequence, String
 from sqlalchemy.orm import relationship
 
-from app.commom.database import Base, db
+from app.common.database import Base, db
+from app.common.exception import FlaskException
 
 from .vote import Vote
 
@@ -19,9 +20,13 @@ class Channel(Base):
 
     @classmethod
     def read(cls, cid):
-        return cls.query \
+        channel =  cls.query \
             .filter(Channel.cid == cid) \
             .first()
+        if channel:
+            return channel
+        else:
+            raise FlaskException(message='Store not found', status_code=404)
 
     @classmethod
     def read_list(cls):

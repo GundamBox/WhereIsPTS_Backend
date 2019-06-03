@@ -16,6 +16,7 @@
         - [Environment](#environment)
     - [Usage](#usage)
         - [Deploy](#deploy)
+        - [Development](#development)
         - [Run Unitttest](#run-unitttest)
     - [API documents](#api-documents)
 
@@ -43,58 +44,53 @@ This is [english link](http://eng.pts.org.tw/)
 
 ### Environment
 
-1. **Install common environment**
+1. **Edit env file**
+
+    Copy `default env file` to `custom env file` and edit it.
 
     ```bash
-    sh ./install.sh
+    cp default_env.sh custom_env.sh
+    ```
+    
+    - **VENV**
+        python virtualenv directory path
+    - **RECAPTCHA_PUBLIC_KEY**, **RECAPTCHA_PRIVATE_KEY**
+        google recaptcha key
+    - **PSQL_*_ROLE_NAME**, **PSQL_*_ROLE_PWD**, **PSQL_*_DB_NAME**
+        postgresql role name, role password, database name 
+
+2. **Install environment**
+
+    ```bash
+    ./install.sh
     ```
 
-2. **Install python environment**
-
-    - **development**
-
-        ```bash
-        pip3 install -r requirements/dev.txt
-        ```
-
-    - **prodution**
-
-        ```bash
-        pip3 install -r requirements/prod.txt
-        ```
+    If you encounter problems that cannot be executed, you can execute the `chmod + x ./install.sh` command to give the script executable permissions.
 
 ## Usage
 
-1. **export environment**
+### Deploy
 
-    ```bash
-    export FLASK_ENV="<env>"
-    # `<env>` can be {development, testing, production, default}
-    # export FLASK_ENV="development"
-    ```
-
-2. **edit config.py**
+1. **Edit config.py**
 
     ```bash
     vim config.py
     ```
 
-3. **migrate database**
+2. **Deploy**
 
     ```bash
-    python3 manage.py db upgrade
+    ./deploy.sh
     ```
 
-4. **run**
+    If you encounter problems that cannot be executed, you can execute the `chmod + x ./deploy.sh` command to give the script executable permissions.
 
-    ```bash
-    python3 manage.py run
-    ```
+### Development
 
-### Deploy
+**Install dev package**
 
 ```bash
-sh ./deploy.sh
+pip install -r requirements/dev.txt
 ```
 
 ### Run Unitttest
